@@ -96,7 +96,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   .grid:hover figure:not(:hover){opacity:.55}
   .grid figure:hover,.grid figure:focus-visible{outline-color:var(--ink)}
   .cat{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:clamp(22px,2.4vw,30px);letter-spacing:.04em;margin:64px 0 10px;scroll-margin-top:24px}
-  .hint+.cat{margin-top:8px}
+  .info+.cat{margin-top:8px}
   .cinfo{max-width:620px;color:var(--mute);font-size:14px;margin-bottom:22px}
   .cat+.grid{margin-top:22px}
   .poster img{object-fit:contain;background:var(--card)}
@@ -130,13 +130,11 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   body.lbv-on .ex{border-color:var(--acc);color:var(--acc)}
   :root[data-theme="light"] body:not(.lbv-on) .ex{border-color:#1f5fd6;color:#1f5fd6}  /* #3d81ff is 3.2:1 on the light page */
 
-  /* zoom cue on every photo */
+  /* zoom cue on hover/focus (top-right of the image so it never covers captions; hidden by default on touch) */
   [data-zoom]{position:relative;cursor:zoom-in}
-  [data-zoom]::after{content:"⤢";position:absolute;right:10px;bottom:10px;width:30px;height:30px;display:grid;place-items:center;background:rgba(10,10,10,.72);color:#efece6;font-size:15px;opacity:.0;transform:translateY(4px);transition:.25s}
-  [data-zoom]:hover::after,[data-zoom]:focus-visible::after{opacity:1;transform:none}
-  @media (hover:none){[data-zoom]::after{opacity:.85;transform:none}}
-  .hint{display:inline-flex;gap:8px;align-items:center;color:var(--dim);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:-14px 0 24px}
-  .hint b{font-weight:400;color:var(--mute);font-size:14px;letter-spacing:0}
+  [data-zoom]::after{content:"⤢";position:absolute;right:10px;top:10px;width:30px;height:30px;display:grid;place-items:center;background:rgba(10,10,10,.72);color:#efece6;font-size:15px;opacity:0;transform:translateY(-4px);transition:.25s;pointer-events:none}
+  @media (hover:hover) and (pointer:fine){[data-zoom]:hover::after{opacity:1;transform:none}}
+  [data-zoom]:focus-visible::after{opacity:1;transform:none}
 
   .lb{--ink:#efece6;--mute:#8d8a85;--dim:#878480;color:var(--ink);position:fixed;inset:0;z-index:20;background:rgba(6,6,6,.96);display:none;grid-template-rows:auto 1fr auto;opacity:0;transition:opacity .15s var(--ease-out),display .15s allow-discrete}
   .lb.on{display:grid;opacity:1;transition-duration:.2s}
@@ -406,7 +404,7 @@ function render(){
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector(`[data-sec="${sid}"] .selw`).setAttribute('aria-current', 'page');
     const posters = sec.projects.every(q => q.poster);
-    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p><div class="tools"><p class="hint"><b>⤢</b> click any ${posters ? 'poster' : 'photo'} to enlarge</p>${posters ? '' : VT}</div><div class="grid${posters ? ' poster' : ''}"></div></section>`;
+    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p>${posters ? '' : `<div class="tools">${VT}</div>`}<div class="grid${posters ? ' poster' : ''}"></div></section>`;
     preview(view.querySelector('.grid'), sid);
     document.getElementById('side').classList.remove('menu');
   } else if (!p) {
@@ -428,7 +426,7 @@ function render(){
     view.innerHTML = p.boulevard
       // the exhibition's own pages run in a frame, so its rooms open here instead of leaving the portfolio
       ? `<section class="lbv"><iframe src="${LBV}${room ? room + '/' : ''}index.html" title="L'Boulevard exhibition"></iframe></section>`
-      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p><div class="tools"><p class="hint"><b>⤢</b> click any photo to enlarge</p>${p.poster ? '' : VT}</div>${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs)}</section>`;
+      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p>${p.poster ? '' : `<div class="tools">${VT}</div>`}${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs)}</section>`;
     document.getElementById('side').classList.remove('menu');
   }
   const now = [sid, pid, room].join('/');  // the route without filters: the archive re-filtering is not a new page
