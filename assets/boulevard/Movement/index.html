@@ -130,7 +130,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 
 /* ---------- in motion: a burst you scroll through like film ---------- */
 .seq { position: relative; margin-top: clamp(64px, 8vw, 120px); padding-top: clamp(20px, 3vw, 32px); border-top: 1px solid var(--ink-faint); }
-.seq > .qrtag { float: right; margin: 0 0 12px 16px; }
 .seq h2 { margin: 0; font-family: var(--f-body); font-stretch: 125%; font-weight: 800; font-size: clamp(20px, 2.4vw, 30px); text-transform: uppercase; letter-spacing: .03em; }
 .seq > p { margin: 8px 0 0; color: var(--ink-dim); max-width: 56ch; }
 /* sprocket holes run along both edges and scroll with the frames */
@@ -183,15 +182,10 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 /* Y2K_078 cubes (SKIMART shapes catalogue) sit just above each section's top rule */
 .cubes { position: absolute; right: 0; bottom: calc(100% + 12px); display: flex; gap: clamp(4px, .5vw, 7px); pointer-events: none; }
 .cubes img { display: block; width: clamp(12px, 1.3vw, 20px); height: auto; }
-/* QR tag naming each section (decoration only, not scannable) */
-.qrtag { display: grid; justify-items: center; gap: 6px; color: var(--ink-dim); }
-.qrtag svg { display: block; width: clamp(48px, 5vw, 80px); height: auto; }
-.qrtag span { font-size: max(calc(var(--small) - 1px), 11px); letter-spacing: .14em; white-space: nowrap; }
-.room-head { position: relative; --h2: clamp(40px, 6vw, 84px); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "num title qr" ". text qr"; gap: 0 clamp(18px, 2.6vw, 36px); align-items: baseline; border-top: 1.5px solid var(--ink); padding-top: clamp(18px, 2.4vw, 28px); }
+.room-head { position: relative; --h2: clamp(40px, 6vw, 84px); display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "num title" ". text"; gap: 0 clamp(18px, 2.6vw, 36px); align-items: baseline; border-top: 1.5px solid var(--ink); padding-top: clamp(18px, 2.4vw, 28px); }
 /* numeral caps match the title caps: Anton/Space Mono cap ratio is 1.243, less a little for the 1.5px outline */
 .room-head .num { grid-area: num; font-family: var(--f-mono); font-weight: 700; font-size: calc(var(--h2) * 1.21); line-height: .8; letter-spacing: -.02em; color: transparent; -webkit-text-stroke: 1.5px var(--blue); }
 .room-head h2 { grid-area: title; margin: 0; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: var(--h2); line-height: .9; }
-.room-head .qrtag { grid-area: qr; align-self: start; }
 .room-head p { grid-area: text; margin: 10px 0 0; max-width: 46ch; color: var(--ink-dim); }
 
 /* ---------- lights down + exit ---------- */
@@ -235,9 +229,7 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
   .name { grid-column: 1; grid-row: auto; align-self: auto; margin-top: 24px; font-size: calc((100vw - 2 * var(--gutter)) / 4.05); }
   .intro { grid-template-columns: minmax(0, 1fr); }
   .route { --pad: 30px; --rail: 7px; }
-  .room-head { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "num title qr" "text text text"; column-gap: 14px; --h2: clamp(32px, 10.4vw, 40px); }
-  .room-head .qrtag svg { width: 40px; }
-  .room-head .qrtag { grid-template-columns: 40px; justify-items: end; }  /* the column is only as wide as the code, its label runs left under it, so long titles keep clear of the code */
+  .room-head { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "num title" "text text"; column-gap: 14px; --h2: clamp(32px, 10.4vw, 40px); }
   @media (max-width: 359px) { .room-head { column-gap: 8px; } }  /* 320px: room for the longest title, Dissolving */
   .room-head p { margin-top: 12px; }
   /* one column, still stepping: each print sits off the last one's edge */
@@ -276,7 +268,7 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
     </figure>
     <h1 class="name glow-soft" aria-label="Movement, away from the stage"><span class="ln" aria-hidden="true">Move</span><span class="ln" aria-hidden="true">ment</span><span class="sub" aria-hidden="true">Away from the stage</span></h1>
     <div class="intro">
-      <p class="byline"><strong>Photographs by Ghoujlami Mohamed</strong><span>Metal Day, L'Boulevard · R.U.C, Casablanca · <b class="glow">20.09.2025 · 19.09.2026</b></span></p>
+      <p class="byline"><strong>Photographs by Mohamed Ghoujlami</strong><span>Metal Day, L'Boulevard · R.U.C, Casablanca · <b class="glow">20.09.2025 · 19.09.2026</b></span></p>
       <p class="statement">The pit has its own show, played with its back to the stage. These photographs from two Metal Days are hung by shutter speed, slowest first: at 1/5 s and 1/13 s people turn into movement, at 1/60 s they still smear, and at 1/250 s the crowd holds still. The slower the shutter, the closer the picture gets to how the pit feels. <em>— Skimart</em></p>
       <div>
         <nav class="plan micro" aria-label="Route">
@@ -285,7 +277,7 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
           <a href="#room-3"><b>III</b> Gathering <span class="sh">1/250</span></a>
           <a href="#motion"><b>+4</b> In motion</a>
         </nav>
-        <p class="credit micro">Canon EOS 70D. 2025: EF-S 18–55mm. 2026: EF 50mm f/1.4 USM. Camera data from the original files. Matted in #EEFFE5.</p>
+        <p class="credit micro">Canon EOS 70D. 2025: EF-S 18–55mm. 2026: EF 50mm f/1.4 USM. Camera data from the original files.</p>
       </div>
     </div>
   </section>
@@ -297,7 +289,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">I</div>
       <h2 id="r1">Dissolving</h2><p>From 1/13 s to 1/30 s, faces and bodies turn into movement.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="11"></svg><span class="micro">Section I</span></div>
     </header>
     <div class="drift">
       <figure class="work a"><button class="shot" type="button" data-cap="02 · Under the screen · 2025 · 19:20:32 · 1/13 s · f/3.5 · ISO 125 · IMG_9205" aria-label="Look closer at 02, Under the screen"><img src="images/mov-25-9205.jpg" alt="Bodies smeared by a slow shutter under the stage screen" width="1882" height="1095" loading="lazy"></button>
@@ -315,7 +306,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">II</div>
       <h2 id="r2">Turning</h2><p>At 1/50 s and 1/60 s the bodies still smear.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="23"></svg><span class="micro">Section II</span></div>
     </header>
     <div class="drift flip">
       <figure class="work a"><button class="shot" type="button" data-cap="05 · White cap · 2026 · 19:03:10 · 1/50 s · f/8 · ISO 320 · IMG_0252" aria-label="Look closer at 05, White cap"><img src="images/mov-26-0252.jpg" alt="A back in a white cap and shirt mid-mosh, the crowd blurred around it" width="1882" height="1282" loading="lazy"></button>
@@ -333,7 +323,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">III</div>
       <h2 id="r3">Gathering</h2><p>At 1/250 s the crowd holds still: the pit opening, an embrace, arms up.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="31"></svg><span class="micro">Section III</span></div>
     </header>
     <div class="drift">
       <figure class="work a"><button class="shot" type="button" data-cap="08 · The pit opens · 2025 · 19:12:01 · 1/250 s · f/3.5 · ISO 1250 · IMG_9176" aria-label="Look closer at 08, The pit opens"><img src="images/mov-25-9176.jpg" alt="A dense crowd facing the stage, one arm raised" width="1882" height="1095" loading="lazy"></button>
@@ -349,7 +338,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 
   <section class="seq" id="motion" aria-labelledby="motion-title">
     <span class="cubes" aria-hidden="true"><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""><img src="../Band/assets/Y2K_078.svg" alt=""></span>
-    <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="7"></svg><span class="micro">In motion</span></div>
     <h2 id="motion-title">In motion</h2>
     <p>Four frames from one pit, 2026, 18:09:38 to 18:11:53. Scroll sideways.</p>
     <div class="film" tabindex="0" role="group" aria-label="In motion, frames 1 to 4">

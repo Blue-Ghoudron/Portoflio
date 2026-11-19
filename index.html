@@ -182,16 +182,20 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
   }
 
   @media (max-width:820px){
-    aside{position:sticky;top:0;width:auto;height:auto;max-height:100svh;padding:16px 16px 0;background:var(--bg);border-right:0;border-bottom:1px solid var(--line);z-index:5}
+    aside{position:sticky;top:0;width:auto;height:auto;max-height:100svh;padding:6px 16px 0;background:var(--bg);border-right:0;border-bottom:1px solid var(--line);z-index:5}
     aside.menu{position:fixed;inset:0;height:100svh;max-height:none;overflow-y:auto;border-bottom:0;z-index:15}
-    .top{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px}
-    .burger{display:block;font-size:12px;letter-spacing:.22em}
+    .top{display:flex;justify-content:space-between;align-items:center;padding-bottom:6px}
+    .logo{min-height:44px;display:inline-flex;align-items:center}
+    .burger{display:inline-flex;align-items:center;min-height:44px;padding:0 0 0 16px;font-size:12px;letter-spacing:.22em}
     .fold{display:none}
-    .top{align-items:center}
     .tagline{display:none}
     .navbody{display:none}
     aside.menu .navbody{display:block;padding-bottom:32px}
     .meta{margin:4px 0 16px}
+    .meta a,.meta #theme{min-height:44px;display:inline-flex;align-items:center}
+    .vt button{min-height:44px;padding:10px 16px}
+    .sel .all{min-height:44px;display:inline-flex;align-items:center}
+    .about dd a{min-height:44px;display:inline-flex;align-items:center;border-bottom:0;text-decoration:underline;text-underline-offset:4px}
     main{margin:0;padding:24px 16px 64px;min-height:0}
     /* the exhibition fills exactly what the menu bar leaves, so only the frame scrolls */
     body.lbv-on{display:flex;flex-direction:column;height:100svh}
@@ -292,7 +296,7 @@ const WORK = [
     {id:'foton-opening', group:'Cocktail Station', name:'Foton Opening', th:'foton-opening-0057', info:'22.10.2026', imgs:["foton-opening-0023", "foton-opening-0024", "foton-opening-0035", "foton-opening-0038", "foton-opening-0041", "foton-opening-0051", "foton-opening-0057", "foton-opening-0069", "foton-opening-0073", "foton-opening-0144", "foton-opening-0440", "foton-opening-0152", "foton-opening-0156", "foton-opening-0159", "foton-opening-0161", "foton-opening-0164", "foton-opening-0173", "foton-opening-0174", "foton-opening-0177", "foton-opening-0199", "foton-opening-0217", "foton-opening-0253", "foton-opening-0255", "foton-opening-0256", "foton-opening-0274", "foton-opening-0275", "foton-opening-0300", "foton-opening-0304", "foton-opening-0375", "foton-opening-0380", "foton-opening-0405", "foton-opening-0409"]},
   ]},
   {id:'design', name:'Design', projects:[
-    {id:'aac', th:'design-aac', name:'American Art Center', info:'Poster design', poster:true, imgs:['x815196_567852','x190932_899304','x905172_741900','x913199_406854','x276823_230940','x980645_442674','x885431_556498']},
+    {id:'aac', th:'design-aac', name:'American Arts Center', info:'Poster design', poster:true, imgs:['x815196_567852','x190932_899304','x905172_741900','x913199_406854','x276823_230940','x980645_442674','x885431_556498']},
     {id:'personal', th:'design-personal', name:'Personal project', info:'Poster design · C-01 – C-04', poster:true, cats:[
       {name:'C-01', info:'Some of my personal project that explores Medieval, Gothic, Renaissance, and Oriental aesthetics and methodology.', imgs:['x609322_253534','x270757_649230','x746891_663120','x109724_353827','x118493_85813','x631743_861109']},
       {name:'C-02', info:'', imgs:['x99638_123460','x920834_698237','x392680_933255','x416801_359515']},
@@ -302,7 +306,7 @@ const WORK = [
     {id:'fan', th:'design-fan', name:'Fan poster', info:"I'm not a human", poster:true, imgs:['x604559_348740','x604084_219457']},
   ]},
   {id:'workshops', name:'Workshops', projects:[
-    {id:'poster-making', name:'Poster Making', info:'American Art Center · 13.02.2026', imgs:['x445340_902249','x750391_208495','x463316_135014','x608178_340387','x966483_675540','x378905_706440','x159531_109084','x576486_848455','x590370_229934','x657530_129159','x870785_903164','x441912_785005','x604999_281541','x823397_694830','x981258_215238','x848905_789179']},
+    {id:'poster-making', name:'Poster Making', info:'American Arts Center · 13.02.2026', imgs:['x445340_902249','x750391_208495','x463316_135014','x608178_340387','x966483_675540','x378905_706440','x159531_109084','x576486_848455','x590370_229934','x657530_129159','x870785_903164','x441912_785005','x604999_281541','x823397_694830','x981258_215238','x848905_789179']},
   ]},
 ];
 

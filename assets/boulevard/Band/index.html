@@ -155,16 +155,10 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 /* Y2K_078 cubes (SKIMART shapes catalogue) sit just above each section's top rule */
 .cubes { position: absolute; right: 0; bottom: calc(100% + 12px); display: flex; gap: clamp(4px, .5vw, 7px); pointer-events: none; }
 .cubes img { display: block; width: clamp(12px, 1.3vw, 20px); height: auto; }
-/* QR tag naming each section (decoration only, not scannable) */
-.qrtag { display: grid; justify-items: center; gap: 6px; color: var(--ink-dim); }
-.qrtag svg { display: block; width: clamp(48px, 5vw, 80px); height: auto; }
-.qrtag span { font-size: max(calc(var(--small) - 1px), 11px); letter-spacing: .14em; white-space: nowrap; }
-.study > .qrtag { float: right; margin: 0 0 12px 16px; }
-.room-head { position: relative; --h2: clamp(40px, 6vw, 84px); display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "num title qr" ". text qr"; gap: 0 clamp(18px, 2.6vw, 36px); align-items: baseline; border-top: 1.5px solid var(--ink); padding-top: clamp(18px, 2.4vw, 28px); }
+.room-head { position: relative; --h2: clamp(40px, 6vw, 84px); display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "num title" ". text"; gap: 0 clamp(18px, 2.6vw, 36px); align-items: baseline; border-top: 1.5px solid var(--ink); padding-top: clamp(18px, 2.4vw, 28px); }
 /* numeral caps match the title caps: Anton/Space Mono cap ratio is 1.243, less a little for the 1.5px outline */
 .room-head .num { grid-area: num; font-family: var(--f-mono); font-weight: 700; font-size: calc(var(--h2) * 1.21); line-height: .8; letter-spacing: -.02em; color: transparent; -webkit-text-stroke: 1.5px var(--blue); }
 .room-head h2 { grid-area: title; margin: 0; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: var(--h2); line-height: .9; }
-.room-head .qrtag { grid-area: qr; align-self: start; }
 .room-head p { grid-area: text; margin: 10px 0 0; max-width: 46ch; color: var(--ink-dim); }
 /* each pair shares two rows (photo, label) so both photos end on one line and both labels start on one line,
    whatever each label holds (an act name adds a line) */
@@ -222,10 +216,8 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 @media (max-width: 860px) {
   .route { --pad: 30px; --rail: 7px; }
   .hero { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "photo" "text"; }
-  /* phone heading: numeral, title and QR on one line, the description takes the full width under them */
-  .room-head { grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "num title qr" "text text text"; column-gap: 14px; --h2: clamp(32px, 10.4vw, 40px); }
-  .room-head .qrtag svg { width: 40px; }
-  .room-head .qrtag { grid-template-columns: 40px; justify-items: end; }  /* the column is only as wide as the code, its label runs left under it, so long titles keep clear of the code */
+  /* phone heading: numeral and title on one line, the description takes the full width under them */
+  .room-head { grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "num title" "text text"; column-gap: 14px; --h2: clamp(32px, 10.4vw, 40px); }
   @media (max-width: 359px) { .room-head { column-gap: 8px; } }  /* 320px: room for the longest title, Dissolving */
   .room-head p { margin-top: 12px; }
   /* the name spans the column: Anton "CONNECTION" measures ~4.4em wide */
@@ -278,7 +270,7 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
     </figure>
 
     <div class="intro">
-      <p class="byline"><strong>Photographs by Ghoujlami Mohamed</strong><span>Metal Day, L'Boulevard · Stade R.U.C, Casablanca · <b class="glow">20.09.2025 · 19.09.2026</b></span></p>
+      <p class="byline"><strong>Photographs by Mohamed Ghoujlami</strong><span>Metal Day, L'Boulevard · Stade R.U.C, Casablanca · <b class="glow">20.09.2025 · 19.09.2026</b></span></p>
       <p class="statement">A stage only works when someone looks back. Thirteen photographs from two Metal Days a year apart, hung by what they show, not by the clock. First the floor, then the stage, then the moment the two meet. <em>— Skimart</em></p>
       <nav class="plan micro" aria-label="Floor plan">
         <a href="#room-1"><b>I</b> The floor <time>20:53</time></a>
@@ -286,7 +278,7 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
         <a href="#room-3"><b>III</b> The look <time>23:00</time></a>
         <a href="#study"><b>+4</b> Study wall</a>
       </nav>
-      <p class="credit micro">2026 works: Sepultura unless noted. 2025 works are credited only where the photograph confirms the act. Canon EOS 70D · EF 50mm f/1.4 USM (2026), EF 50mm f/1.8 STM (2025). Matted in #EEFFE5.</p>
+      <p class="credit micro">2026 works: Sepultura unless noted. 2025 works are credited only where the photograph confirms the act. Canon EOS 70D · EF 50mm f/1.4 USM (2026), EF 50mm f/1.8 STM (2025).</p>
     </div>
   </section>
 
@@ -297,7 +289,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">I</div>
       <h2 id="r1">The floor</h2><p>Before anyone on stage moves, the crowd is already performing.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="3"></svg><span class="micro">Section I</span></div>
     </header>
     <div class="hang lp">
       <figure class="work land"><button class="shot" type="button" data-cap="02 · Horns for the opener · Suicide Machine · 2026 · 20:53:57 · 1/100 s · f/1.6 · ISO 100 · IMG_0416" aria-label="Look closer at 02, Horns for the opener"><img src="images/frame-02.jpg" alt="Suicide Machine on stage, crowd silhouettes with horns raised, the band's logo glowing on the screen" width="1882" height="1282"></button>
@@ -319,7 +310,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">II</div>
       <h2 id="r2">The stage</h2><p>Light does most of the work. The band stays small inside it.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="11"></svg><span class="micro">Section II</span></div>
     </header>
     <div class="hang lp">
       <figure class="work land"><button class="shot" type="button" data-cap="06 · Fan of light · 2026 · 22:51:29 · 1/60 s · f/2 · ISO 100 · IMG_0553" aria-label="Look closer at 06, Fan of light"><img src="images/frame-07.jpg" alt="Light beams fanning out over the drum riser, the band small against the glowing backdrop" width="1882" height="1282"></button>
@@ -341,7 +331,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <span class="cubes" aria-hidden="true"><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""></span>
       <div class="num" aria-hidden="true">III</div>
       <h2 id="r3">The look</h2><p>A giant eye on the screen, a crowd under it. The connection, made literal.</p>
-      <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="19"></svg><span class="micro">Section III</span></div>
     </header>
     <div class="hang lp">
       <figure class="work land"><button class="shot" type="button" data-cap="10 · At the rail · 2025 · 23:00:05 · 1/200 s · f/1.8 · ISO 10000 · IMG_9436" aria-label="Look closer at 10, At the rail"><img src="images/frame-25-9436.jpg" alt="Spectators leaning on the barrier, all facing the same way" width="1882" height="1282" loading="lazy"></button>
@@ -361,7 +350,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 
   <section class="study" id="study" aria-labelledby="study-title">
     <span class="cubes" aria-hidden="true"><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""><img src="assets/Y2K_078.svg" alt=""></span>
-    <div class="qrtag" aria-hidden="true"><svg data-qr data-seed="7"></svg><span class="micro">Study wall</span></div>
     <h2 id="study-title">Study wall</h2>
     <p>The rest of the roll. Each one sits seconds away from a hung work and lost the edit to its twin.</p>
     <div class="strip">
