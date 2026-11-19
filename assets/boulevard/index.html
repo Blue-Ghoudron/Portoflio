@@ -94,11 +94,8 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 @media (max-width: 1439px) { .doors { align-items: start; } }
 .door { display: block; color: inherit; text-decoration: none; }
 .door .print { position: relative; display: block; } .door img { display: block; width: 100%; height: auto; box-shadow: 0 28px 56px -22px rgba(8,4,9,.8), 0 8px 18px -8px rgba(8,4,9,.55); }
-/* light theme: paint the cream mat printed into each cover plum, like the prints in the rooms (41/1882 of the width, 41/1282 for Connection) */
-:root[data-theme="light"] .door .print::before { content: ""; position: absolute; inset: 0; pointer-events: none; padding: calc(2.19% + 1px); background: var(--ink);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); }
-:root[data-theme="light"] .door .print:has(img[width="1282"])::before { padding: calc(3.21% + 1px); }  /* +1px hides the seam at the photo edge */
+/* light theme: keep the printed #EEFFE5 cream mat, separated from the cream wall by a thin plum edge and soft shadow */
+:root[data-theme="light"] .door img { outline: 1px solid rgba(37,23,38,.28); outline-offset: -1px; box-shadow: 0 18px 40px -18px rgba(37,23,38,.32), 0 4px 12px -4px rgba(37,23,38,.18); }
 .door .label { border-top: 1px solid var(--ink-faint); padding-top: 10px; margin-top: 18px; display: grid; gap: 2px; min-height: 92px; }
 .door .no { font-family: var(--f-mono); font-size: var(--small); letter-spacing: .12em; text-transform: uppercase; color: var(--blue-text); }
 .door h2 { margin: 0; font-family: var(--f-head); font-weight: 400; text-transform: uppercase; font-size: clamp(28px, 3vw, 44px); line-height: 1.05; transition: color .2s; }

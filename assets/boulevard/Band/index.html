@@ -132,11 +132,8 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
   mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0); opacity: 0; transition: opacity .2s; }
 .shot:has(img[width="1282"])::before { padding: 3.21%; }
 .shot:focus-visible::before, .shot:active::before { opacity: 1; }
-/* light theme: the ring stays on and paints the cream mat plum; hover and focus still turn it blue */
-:root[data-theme="light"] .shot::before { opacity: 1; background: var(--ink); transition: background-color .2s; padding: calc(2.19% + 1px); }  /* +1px hides the seam at the photo edge */
-:root[data-theme="light"] .shot:has(img[width="1282"])::before { padding: calc(3.21% + 1px); }
-:root[data-theme="light"] .shot:is(:focus-visible, :active)::before { background: var(--blue); }
-@media (hover: hover) { :root[data-theme="light"] .shot:hover::before { background: var(--blue); } }
+/* light theme: keep the printed #EEFFE5 cream mat, separated from the cream wall by a thin plum edge and soft shadow; hover/focus still turn it blue */
+:root[data-theme="light"] .shot { background: #eeffe5; outline: 1px solid rgba(37,23,38,.28); outline-offset: -1px; box-shadow: 0 18px 40px -18px rgba(37,23,38,.32), 0 4px 12px -4px rgba(37,23,38,.18); }
 @media (hover: none) { .shot:active::after { opacity: 1; transform: none; } }
 .work { position: relative; z-index: 51; margin: 0; min-width: 0; }
 .label { border-top: 1px solid var(--ink-faint); padding-top: 10px; margin-top: 14px; display: grid; gap: 2px; }
