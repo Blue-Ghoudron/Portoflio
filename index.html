@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SKIMART — Photographer / Visual Artist</title>
 <script>/* saved choice, else the system setting; in <head> so the page paints in the right theme */
-try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.nav=localStorage.getItem('skm-nav')||'';document.documentElement.dataset.view=localStorage.getItem('skm-view')||''}catch(e){}</script>
+try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||localStorage.getItem('lbv-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.nav=localStorage.getItem('skm-nav')||'';document.documentElement.dataset.view=localStorage.getItem('skm-view')||''}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/archive/archive.css">
@@ -430,7 +430,7 @@ function render(){
     if (p.boulevard) {
       document.body.classList.add('lbv-on');
       // same rule as the exhibition's theme.js, so the frame and the portfolio agree before it loads
-      try { document.body.dataset.lbv = localStorage.getItem('lbv-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); } catch (err) {}
+      try { document.body.dataset.lbv = localStorage.getItem('lbv-theme') || localStorage.getItem('skm-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); } catch (err) {}
     }
     view.innerHTML = p.boulevard
       // the exhibition's own pages run in a frame, so its rooms open here instead of leaving the portfolio
@@ -449,16 +449,16 @@ function render(){
 // mirror the exhibition's light/dark choice onto the portfolio while it is open (same origin, so the frame is readable)
 view.addEventListener('load', e => {
   if (e.target.tagName !== 'IFRAME') return;
-  let root; try { root = e.target.contentDocument.documentElement; } catch (err) { return; }  // file:// blocks frame access
+  let froot; try { froot = e.target.contentDocument.documentElement; } catch (err) { return; }  // file:// blocks frame access
   const dir = new URL('.', e.target.contentWindow.location.href).href, base = new URL(LBV, location.href).href;
   if (dir.startsWith(base)) { const r = dir.slice(base.length).replace(/\/$/, ''); history.replaceState(null, '', '#photography/boulevard' + (r ? '/' + r : '')); }
-  const sync = () => document.body.dataset.lbv = root.dataset.theme || 'dark';
-  sync(); new MutationObserver(sync).observe(root, {attributes: true, attributeFilter: ['data-theme']});
+  const sync = () => { const t = froot.dataset.theme || 'dark'; document.body.dataset.lbv = t; root.dataset.theme = t; themeLabel(); };
+  sync(); new MutationObserver(sync).observe(froot, {attributes: true, attributeFilter: ['data-theme']});
 }, true);
 
 const themeBtn = document.getElementById('theme'), root = document.documentElement;
 const themeLabel = () => { const l = root.dataset.theme === 'light'; themeBtn.textContent = l ? 'dark' : 'light'; themeBtn.setAttribute('aria-label', `Switch to ${l ? 'dark' : 'light'} theme`); };
-themeBtn.onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; try { localStorage.setItem('skm-theme', root.dataset.theme); } catch (e) {} themeLabel(); };
+themeBtn.onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; try { localStorage.setItem('skm-theme', root.dataset.theme); localStorage.setItem('lbv-theme', root.dataset.theme); } catch (e) {} themeLabel(); };
 themeLabel(); foldLabel();
 
 // lightbox: click a photo → full screen; click again → 2× zoom that follows the pointer
