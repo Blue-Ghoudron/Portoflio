@@ -79,11 +79,9 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 .theme { margin-left: auto; font: inherit; color: var(--ink-dim); background: none; border: 1px solid var(--ink-faint); padding: 9px 13px; min-height: 40px; cursor: pointer; transition: border-color .2s, color .2s; }
 @media (hover: hover) { .theme:hover { border-color: var(--blue-text); color: var(--ink); } }  /* no stuck hover after a tap */
 .theme:focus-visible { outline: 2px solid var(--blue); outline-offset: 4px; }
-/* phones: the four pages as an even 2 x 2 block, theme and handles share the line under it, edge to edge */
-@media (max-width: 560px) { .top { gap: 6px; } .pages { flex: 1 0 100%; display: grid; grid-template-columns: 1fr 1fr; } .pages a { justify-content: center; padding-inline: 8px; }
-  .theme { margin-left: 0; } .handles { flex: 1; justify-content: flex-end; gap: 6px; } .handles a { font-size: 12px; padding-inline: 10px; } }
-/* phones: the pinned bar stays short, the pages swipe in one row */
-@media (max-width: 560px) { .pages { display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .pages a { flex: none; } }
+/* phones: one compact sticky row — the pages swipe beside the theme button */
+@media (max-width: 560px) { .top { flex-wrap: nowrap; gap: 6px; padding-top: 6px; padding-bottom: 8px; } .pages { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; } .pages a { flex: none; padding: 8px 10px; }
+  .theme { flex: none; margin-left: 0; padding: 8px 10px; } .handles a { font-size: 12px; padding-inline: 10px; } }
 
 /* ---------- entrance: the wide frame on the right, the name fills the wall beside it and sits on the frame's bottom line ---------- */
 .hero { --gap: clamp(20px, 2.4vw, 36px); --lw: min(58cqi, calc((100 * var(--svh) - 200px) * 1.468)); position: relative; display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: var(--gap); container-type: inline-size; padding-top: clamp(24px, 3vw, 40px); }
@@ -271,9 +269,6 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <a href="../Faces/index.html">Faces and Eyes</a>
     </nav>
     <button class="theme micro" type="button" id="theme">Light</button>
-    <nav class="handles" aria-label="Tagged on Instagram">
-      <a href="https://www.instagram.com/lboulevard_festival/" target="_blank" rel="noopener">lboulevard_festival</a>
-    </nav>
   </div>
 
   <section class="hero" id="entrance" aria-label="Entrance">
@@ -381,6 +376,9 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
       <text text-anchor="middle" y="8" font-size="23" font-family="Archivo, Arial, sans-serif" font-weight="800" font-stretch="120%" fill="currentColor" letter-spacing="1">SKIMART</text>
     </svg>
     <div class="legal micro">
+      <nav class="handles" aria-label="Tagged on Instagram" style="margin-bottom:12px">
+        <a href="https://www.instagram.com/lboulevard_festival/" target="_blank" rel="noopener">lboulevard_festival</a>
+      </nav>
       <b>Shot &amp; designed by Skimart</b> · No beauty, only function<br>
       © 2025–2026 Skimart™. All rights reserved.<br>
       Skimart™ is a trademark of Mohamed, used to identify music and visual art services.<br>
