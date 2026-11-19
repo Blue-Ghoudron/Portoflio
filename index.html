@@ -195,14 +195,24 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
     .cat{scroll-margin-top:84px}
     .grid figcaption{font-size:10px;letter-spacing:0;gap:6px}
   }
-  /* home: a preview of each section */
-  .intro{display:grid;grid-template-columns:clamp(160px,20vw,270px) 1fr 1fr;gap:clamp(24px,3vw,40px);align-items:start;margin-bottom:clamp(72px,10vw,140px)}
+  /* home: intro, featured L'Boulevard exhibition strip, and a preview of each section */
+  .intro{display:grid;grid-template-columns:clamp(160px,18vw,240px) minmax(0,1fr) minmax(0,1fr);gap:14px clamp(24px,3vw,40px);align-items:start;margin-bottom:clamp(40px,5vw,64px)}
   .intro img{display:block;width:100%;aspect-ratio:1;object-fit:cover;grid-row:span 2}
-  .intro .name{font-weight:300;font-size:clamp(40px,4.4vw,64px);line-height:1.12;letter-spacing:-.01em}
-  .intro .roles{font-size:clamp(18px,1.6vw,22px);line-height:1.3;padding-top:6px}
-  .intro .roles small{display:block;font-size:13px;color:var(--soft);margin:4px 0 8px}
-  .intro .bio{grid-column:2/-1;max-width:60ch;font-size:clamp(16px,1.3vw,19px);line-height:1.5;color:var(--soft)}
-  @media (max-width:900px){.intro{grid-template-columns:clamp(120px,30vw,200px) 1fr}.intro img{grid-row:auto}.intro .roles,.intro .bio{grid-column:1/-1}}
+  .intro .name{font-weight:300;font-size:clamp(36px,4.2vw,60px);line-height:1.08;letter-spacing:-.01em}
+  .intro .roles{font-size:clamp(17px,1.5vw,21px);line-height:1.3;padding-top:4px}
+  .intro .roles small{display:block;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+  .intro .bio{grid-column:2/-1;max-width:58ch;font-size:clamp(15px,1.25vw,18px);line-height:1.5;color:var(--soft)}
+  @media (max-width:1100px){.intro{grid-template-columns:clamp(140px,22vw,200px) minmax(0,1fr)}.intro img{grid-row:span 3}.intro .roles,.intro .bio{grid-column:2}}
+  @media (max-width:560px){.intro{grid-template-columns:112px minmax(0,1fr);gap:14px 18px}.intro img{grid-row:auto}.intro .roles,.intro .bio{grid-column:1/-1}}
+  .lbv-feat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 28px;align-items:center;padding:20px clamp(18px,2.4vw,28px);margin-bottom:clamp(48px,6vw,84px);background:#251726;color:#eeffe5;border:1px solid rgba(238,255,229,.16);transition:border-color .2s}
+  .lbv-feat:hover,.lbv-feat:focus-visible{border-color:#337aff}
+  .lbv-feat .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#3d81ff}
+  .lbv-feat h2{font-weight:400;font-size:clamp(26px,2.8vw,38px);line-height:1.05;letter-spacing:-.01em;margin:6px 0}
+  .lbv-feat .meta-line{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(238,255,229,.7)}
+  .lbv-feat .cta{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#eeffe5;border-bottom:1px solid #337aff;padding-bottom:3px}
+  .lbv-feat .prints{display:flex;align-items:flex-end;gap:10px}
+  .lbv-feat .prints img{display:block;height:clamp(84px,9vw,124px);width:auto;box-shadow:0 12px 24px -10px rgba(8,4,9,.75)}
+  @media (max-width:960px){.lbv-feat{grid-template-columns:1fr}.lbv-feat .prints img{height:clamp(76px,18vw,112px)}}
   .sel{margin-top:clamp(72px,10vw,140px);padding-top:28px;border-top:1px solid var(--line)}
   .home .sel:first-of-type{margin-top:0;padding-top:0;border-top:0}
   .sel-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:28px}
@@ -407,7 +417,8 @@ function render(){
     document.getElementById('side').classList.remove('menu');
   } else if (!p) {
     view.innerHTML = `<section class="home"><h1 class="vh">SKIMART · Photographer / Visual Artist</h1>
-      <div class="intro"><img src="${F('me')}" alt="Mohamed Ghoujlami in a wheat field at dusk, holding a lamb"><p class="name">Mohamed<br>Ghoujlami</p><p class="roles">Photographer, graphic&nbsp;designer<small>Who takes photos of the streets, live music events, and portraits</small></p><p class="bio">I'm Mohamed Ghoujlami, aka SKIMART, based in Casablanca, Morocco. I capture people, places and culture through photography, design and visual storytelling.</p></div>
+      <div class="intro"><img src="${F('me')}" alt="Mohamed Ghoujlami in a wheat field at dusk, holding a lamb"><p class="name">Mohamed<br>Ghoujlami</p><p class="roles">Photographer, graphic&nbsp;designer<small>Casablanca, Morocco</small></p><p class="bio">I capture people, places and culture through photography, design and visual storytelling — streets, live music and portraits.</p></div>
+      <a class="lbv-feat" href="#photography/boulevard"><div><span class="k mono">Exhibition · 3 rooms</span><h2>L'Boulevard</h2><p class="meta-line mono">Metal Day · Casablanca · 2025–2026 · Movement · Connection · Faces and Eyes</p><span class="cta mono">enter exhibition →</span></div><div class="prints" aria-hidden="true"><img src="${LBV}Movement/images/mov-25-9206.jpg" alt=""><img src="${LBV}Band/images/frame-03.jpg" alt=""><img src="${LBV}Faces/images/fac-25-9304.jpg" alt=""></div></a>
       ${WORK.map(x => `<section class="sel" data-for="${x.id}" aria-labelledby="sel-${x.id}"><div class="sel-head"><h2 id="sel-${x.id}"><a href="#${x.id}">${x.name}</a></h2><a class="all" href="#${x.id}">see all →</a></div><div class="grid pre${x.projects.every(q => q.poster) ? ' poster' : ''}"></div></section>`).join('')}</section>`;
     spyAt = null; view.querySelectorAll('.sel').forEach(x => preview(x.querySelector('.grid'), x.dataset.for, 6));
     if (sid) openSec(sid);
