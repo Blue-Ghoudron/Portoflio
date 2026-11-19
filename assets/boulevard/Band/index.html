@@ -85,9 +85,9 @@ body::after, .top::after { content: ""; position: absolute; inset: 0; z-index: 5
 
 /* ---------- entrance: the V0.1 sheet ---------- */
 .hero { position: relative; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "name photo" "text photo"; grid-template-rows: auto 1fr; container-type: inline-size;
-  column-gap: clamp(16px, 3vw, 40px); padding-top: clamp(28px, 3.4vw, 48px); }
+  column-gap: clamp(46px, 4.4vw, 64px); padding-top: clamp(28px, 3.4vw, 48px); }
 .name { grid-area: name; position: relative; margin: 0; font-family: var(--f-head); font-weight: 400; text-transform: uppercase;
-  font-size: clamp(64px, min(13.5cqi, calc(22 * var(--svh))), 244px); line-height: .84; letter-spacing: -.005em; white-space: nowrap; }
+  font-size: clamp(64px, min(12cqi, calc(22 * var(--svh))), 244px); line-height: .84; letter-spacing: -.005em; white-space: nowrap; }
 .name .sub { display: block; margin-top: .14em; font-family: var(--f-body); font-stretch: 125%; font-weight: 800; font-size: max(.16em, 12px); line-height: 1.1; letter-spacing: .06em; color: var(--blue-text); text-shadow: none; white-space: normal; }
 .lead { grid-area: photo; position: relative; z-index: 51; margin: 0; align-self: start; }
 .lead .panel { position: absolute; inset: 4% -7% 10% 9%; border: 2px solid var(--blue); transform: skew(-8deg); z-index: -1; overflow: hidden; }
