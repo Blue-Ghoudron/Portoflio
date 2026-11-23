@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readWork, readLabels, writeLabels, editIndex, bumpLabels, editPhotos, newId, cameraLine, readSelected, editSelected, selection, insertProject, orderProjects } from '../tools/pages-core.js';
+import { readWork, readLabels, writeLabels, editIndex, bumpLabels, editPhotos, newId, cameraLine, readSelected, editSelected, selection, insertProject, orderProjects, deleteProject } from '../tools/pages-core.js';
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url));
 const html = readFileSync(join(ROOT, 'index.html'), 'utf8'), labelsJs = readFileSync(join(ROOT, 'assets/home/labels.js'), 'utf8');
@@ -125,4 +125,21 @@ test('rename: the page line only, quotes survive, categories keep theirs', () =>
   assert.equal(proj(w, 'soualem').name, "Soualem's Fields"); assert.equal(proj(w, 'jazz').name, proj(readWork(html), 'jazz').name);
   const p = proj(readWork(html), 'personal'), c = readWork(editIndex(html, {proj: 'personal', cat: 'C-02', imgs: p.cats[1].imgs, name: 'Personal'}));
   assert.equal(proj(c, 'personal').name, 'Personal'); assert.deepEqual(proj(c, 'personal').cats.map(x => x.name), p.cats.map(x => x.name));
+});
+
+test('edit info, move group, and delete project safely', () => {
+  const s = proj(readWork(html), 'soualem');
+  const w = readWork(editIndex(html, {proj: 'soualem', imgs: s.imgs, info: "Soualem · Spring '26", group: 'Music'}));
+  assert.equal(proj(w, 'soualem').info, "Soualem · Spring '26");
+  assert.equal(proj(w, 'soualem').group, 'Music');
+  const p = proj(readWork(html), 'personal');
+  const c = readWork(editIndex(html, {proj: 'personal', cat: 'C-02', imgs: p.cats[1].imgs, info: 'Brutalist series'}));
+  assert.equal(proj(c, 'personal').cats[1].info, 'Brutalist series');
+  assert.equal(proj(c, 'personal').info, p.info);
+  const del = readWork(deleteProject(html, 'photography', 'soualem'));
+  assert.equal(proj(del, 'soualem'), undefined);
+  assert.ok(proj(del, 'jazz'));
+  const delMulti = readWork(deleteProject(html, 'design', 'personal'));
+  assert.equal(proj(delMulti, 'personal'), undefined);
+  assert.ok(proj(delMulti, 'aac'));
 });

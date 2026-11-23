@@ -4,8 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SKIMART — Photographer / Visual Artist</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='sans-serif' font-size='18' font-weight='500' fill='%23efece6'%3ES%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Mohamed Ghoujlami (SKIMART) — Photographer and graphic designer in Casablanca, Morocco. Live music, street photography, portraits, L'Boulevard exhibition, and poster design.">
+<meta property="og:title" content="SKIMART — Mohamed Ghoujlami">
+<meta property="og:description" content="Photographer &amp; graphic designer in Casablanca — live music, street photography, portraits, and poster design.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://blue-ghoudron.github.io/PORTOFLIO/assets/boulevard/Movement/images/mov-25-9206.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <script>/* saved choice, else the system setting; in <head> so the page paints in the right theme */
-try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.nav=localStorage.getItem('skm-nav')||'';document.documentElement.dataset.view=localStorage.getItem('skm-view')||''}catch(e){}</script>
+try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||localStorage.getItem('lbv-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.nav=localStorage.getItem('skm-nav')||'';document.documentElement.dataset.view=localStorage.getItem('skm-view')||''}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/archive/archive.css">
@@ -75,11 +82,12 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   .about>p{max-width:560px;color:var(--soft);margin-bottom:16px}
   .about .photo{max-width:760px;margin:8px 0 28px}.about .photo img{display:block;width:100%;height:auto}
   .about>.big{font-size:clamp(36px,4.6vw,64px);line-height:1;letter-spacing:-.02em;color:var(--ink);margin:0 0 20px}
-  .about .todo{border:1px dashed var(--dim);padding:12px 14px;color:var(--mute);font-size:13px}
   .about dl{display:grid;grid-template-columns:max-content 1fr;gap:10px 28px;max-width:640px;margin-top:32px;padding-top:24px;border-top:1px solid var(--line)}
   .about dt{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);padding-top:3px}
   .about dd a{border-bottom:1px solid var(--dim)}
   .about dd a:hover{border-color:var(--ink)}
+  .copy{margin-left:10px;padding:2px 8px;border:1px solid var(--line);font:400 10px/1.6 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);vertical-align:1px;transition:color .2s,border-color .2s}
+  .copy:hover{color:var(--ink);border-color:var(--ink)}
   @media (max-width:560px){.about dl{grid-template-columns:1fr;gap:4px}.about dd{margin-bottom:12px}}
 
   .proj h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.01em}
@@ -87,8 +95,23 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   /* every photo keeps its own shape, landscape or portrait; rows read left to right like the viewer */
   /* masonry: 1px rows, each figure spans its own height (set in JS) so it sits right under the one above */
   .grid{--g:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1px;gap:0 var(--g);align-items:start}
+  .grid.small{grid-template-columns:repeat(2,1fr)}
+  .grid.solo{grid-template-columns:minmax(0,560px)}
+  @media (min-width:821px){.grid.lead figure.wide{grid-column:span 2}}
+  .pnav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(56px,7vw,96px);padding-top:24px;border-top:1px solid var(--line)}
+  .pnav a{display:grid;gap:4px;min-height:44px;align-content:center;color:var(--mute);transition:color .2s}
+  .pnav a:hover{color:var(--ink)}
+  .pnav .next{grid-column:2;text-align:right;justify-items:end}
+  .pnav small{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .pnav span{font-size:clamp(18px,2vw,24px);line-height:1.15;color:var(--ink)}
+  .totop{display:inline-flex;align-items:center;margin-top:32px;padding:6px 0;min-height:44px;font:400 11px/1 "IBM Plex Mono",monospace;letter-spacing:.18em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line);transition:color .2s,border-color .2s}
+  .totop:hover{color:var(--ink);border-color:var(--ink)}
+  .home .sel figure[data-from-label]::before{content:attr(data-from-label);position:absolute;left:10px;top:10px;z-index:2;padding:4px 8px;background:rgba(10,10,10,.76);color:#efece6;font:400 10px/1.2 "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;opacity:0;transform:translateY(-4px);transition:.2s;pointer-events:none}
+  @media (hover:hover) and (pointer:fine){.home .sel figure[data-from-label]:hover::before{opacity:1;transform:none}}
+  .home .sel figure[data-from-label]:focus-visible::before{opacity:1;transform:none}
+  @media (max-width:560px){.pnav{grid-template-columns:1fr}.pnav .next{grid-column:1;text-align:left;justify-items:start}}
   .proj{container-type:inline-size}
-  @container (min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}}
+  @container (min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}.grid.small{grid-template-columns:repeat(2,1fr)}.grid.solo{grid-template-columns:minmax(0,560px)}}
   .grid figure{margin-bottom:var(--g);overflow:hidden;background:var(--card);outline:1px solid transparent;outline-offset:3px;transition:outline-color .2s,opacity .3s}
   .grid img{display:block;width:100%;height:auto;transition:opacity .5s var(--ease-out),transform .8s var(--ease-out);opacity:0;transform:scale(1.03)}
   .grid img.in{opacity:1;transform:none}
@@ -96,7 +119,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   .grid:hover figure:not(:hover){opacity:.55}
   .grid figure:hover,.grid figure:focus-visible{outline-color:var(--ink)}
   .cat{font-family:"IBM Plex Mono",monospace;font-weight:400;font-size:clamp(22px,2.4vw,30px);letter-spacing:.04em;margin:64px 0 10px;scroll-margin-top:24px}
-  .hint+.cat{margin-top:8px}
+  .info+.cat{margin-top:8px}
   .cinfo{max-width:620px;color:var(--mute);font-size:14px;margin-bottom:22px}
   .cat+.grid{margin-top:22px}
   .poster img{object-fit:contain;background:var(--card)}
@@ -130,28 +153,29 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   body.lbv-on .ex{border-color:var(--acc);color:var(--acc)}
   :root[data-theme="light"] body:not(.lbv-on) .ex{border-color:#1f5fd6;color:#1f5fd6}  /* #3d81ff is 3.2:1 on the light page */
 
-  /* zoom cue on every photo */
+  /* zoom cue on hover/focus (top-right of the image so it never covers captions; hidden by default on touch) */
   [data-zoom]{position:relative;cursor:zoom-in}
-  [data-zoom]::after{content:"⤢";position:absolute;right:10px;bottom:10px;width:30px;height:30px;display:grid;place-items:center;background:rgba(10,10,10,.72);color:#efece6;font-size:15px;opacity:.0;transform:translateY(4px);transition:.25s}
-  [data-zoom]:hover::after,[data-zoom]:focus-visible::after{opacity:1;transform:none}
-  @media (hover:none){[data-zoom]::after{opacity:.85;transform:none}}
-  .hint{display:inline-flex;gap:8px;align-items:center;color:var(--dim);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:-14px 0 24px}
-  .hint b{font-weight:400;color:var(--mute);font-size:14px;letter-spacing:0}
+  [data-zoom]::after{content:"⤢";position:absolute;right:10px;top:10px;width:30px;height:30px;display:grid;place-items:center;background:rgba(10,10,10,.72);color:#efece6;font-size:15px;opacity:0;transform:translateY(-4px);transition:.25s;pointer-events:none}
+  @media (hover:hover) and (pointer:fine){[data-zoom]:hover::after{opacity:1;transform:none}}
+  [data-zoom]:focus-visible::after{opacity:1;transform:none}
 
-  .lb{--ink:#efece6;--mute:#8d8a85;--dim:#878480;color:var(--ink);position:fixed;inset:0;z-index:20;background:rgba(6,6,6,.96);display:none;grid-template-rows:auto 1fr auto;opacity:0;transition:opacity .15s var(--ease-out),display .15s allow-discrete}
+  .lb{--ink:#efece6;--mute:#8d8a85;--dim:#878480;color:var(--ink);position:fixed;inset:0;z-index:20;background:#060606;display:none;grid-template-rows:auto 1fr auto;opacity:0;transition:opacity .15s var(--ease-out),display .15s allow-discrete}
   .lb.on{display:grid;opacity:1;transition-duration:.2s}
   @starting-style{.lb.on{opacity:0}.lb.on .stage img{transform:scale(.97)}}
-  .lb header{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+  .lb header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
   .lb .stage{position:relative;overflow:hidden;display:grid;place-items:center;cursor:zoom-in}
   .lb .stage.z{cursor:zoom-out}
   .lb .stage img{max-width:calc(100vw - 140px);max-height:calc(100svh - 130px);object-fit:contain;transition:transform .3s var(--ease-out);user-select:none;-webkit-user-drag:none}
   .lb .stage.z img{transition:none}
-  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:72px;font-size:26px;color:var(--mute);z-index:2}
+  .lb .nav{position:absolute;top:50%;transform:translateY(-50%);width:52px;height:72px;display:grid;place-items:center;font-size:26px;color:var(--mute);z-index:2}
+  .lb .nav[hidden]{display:none}
   .lb .nav:hover{color:var(--ink)}
   .lb .prev{left:8px}.lb .next{right:8px}
-  .lb .x{font-size:22px;color:var(--ink);width:40px;height:40px}
-  .lb footer{padding:12px 20px 18px;text-align:center;font:400 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--dim)}
-  @media (max-width:820px){.lb .stage img{max-width:100vw;max-height:calc(100svh - 120px)}.lb .nav{display:none}}
+  .lb .x{display:grid;place-items:center;font-size:22px;color:var(--ink);width:44px;height:44px}
+  .lb footer{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:4px 12px;padding:12px 20px 18px;text-align:center;font:400 11px/1.5 "IBM Plex Mono",monospace;letter-spacing:.08em;color:var(--dim)}
+  #lb-from{color:var(--ink);border-bottom:1px solid var(--mute);padding-bottom:1px;white-space:nowrap}
+  #lb-from:hover{border-color:var(--ink)}
+  @media (max-width:820px){.lb .stage img{max-width:100vw;max-height:calc(100svh - 120px)}.lb .nav{width:44px;height:44px;font-size:18px;color:var(--ink);background:rgba(6,6,6,.68);border:1px solid rgba(239,236,230,.18)}}
 
   .burger{display:none}
   /* collapse: the side menu folds to a strip; its button is bordered like the light/dark one */
@@ -163,31 +187,40 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   .wh{margin:0 0 10px;font:400 11px/1 "IBM Plex Mono",monospace;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
   /* minimised: a strip of every project's photo with its name in small type underneath */
   @media (min-width:821px){
-    :root[data-nav="fold"] aside{width:144px;padding:40px 16px 32px}
-    :root[data-nav="fold"] .top{justify-content:center;margin-bottom:20px}
-    :root[data-nav="fold"] :is(.top>div,.meta,.wh,.tog .n,.ex,.go){display:none}
+    :root[data-nav="fold"] aside{width:144px;padding:28px 14px 32px}
+    :root[data-nav="fold"] .top{flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
+    :root[data-nav="fold"] .logo{font-size:12px;letter-spacing:.16em}
+    :root[data-nav="fold"] :is(.tagline,.meta,.wh,.tog .n,.ex,.go){display:none}
     /* the strip is labelled by genre (photography, street, music…), not by project */
     :root[data-nav="fold"] .tog{display:flex;justify-content:space-between;align-items:center;padding:14px 0 4px;font:400 11px/1.3 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--ink)}
     :root[data-nav="fold"] .gsec>.tog{padding:10px 0 4px;font-size:10px;color:var(--mute)}
     :root[data-nav="fold"] .sec{border:0}
     :root[data-nav="fold"] .list ul{padding:0}
-    :root[data-nav="fold"] .list a{grid-template-columns:1fr;gap:2px;padding:6px 0}
-    :root[data-nav="fold"] .list a .nm{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
-    :root[data-nav="fold"] .list a .th{width:96px}
+    :root[data-nav="fold"] .list a{grid-template-columns:1fr;gap:4px;padding:8px 0}
+    :root[data-nav="fold"] .list a .no{order:1}
+    :root[data-nav="fold"] .list a .th{order:2;width:100%;height:56px;justify-self:start}
+    :root[data-nav="fold"] .list a.pst .th{width:56px;height:70px;justify-self:start}
+    :root[data-nav="fold"] .list a .nm{order:3;font-size:10px;line-height:1.25}
     :root[data-nav="fold"] .fold .ch{transform:scaleX(-1)}
     :root[data-nav="fold"] main{margin-left:144px}
   }
 
   @media (max-width:820px){
-    aside{position:sticky;top:0;width:auto;height:auto;max-height:100svh;padding:16px 16px 0;background:var(--bg);border-right:0;border-bottom:1px solid var(--line);z-index:5}
-    .top{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px}
-    .burger{display:block;font-size:12px;letter-spacing:.22em}
+    aside{position:sticky;top:0;width:auto;height:auto;max-height:100svh;padding:6px 16px 0;background:var(--bg);border-right:0;border-bottom:1px solid var(--line);z-index:5}
+    aside.menu{position:fixed;inset:0;height:100svh;max-height:none;overflow-y:auto;border-bottom:0;z-index:15}
+    .top{display:flex;justify-content:space-between;align-items:center;padding-bottom:6px}
+    .logo{min-height:44px;display:inline-flex;align-items:center}
+    .burger{display:inline-flex;align-items:center;min-height:44px;padding:0 0 0 16px;font-size:12px;letter-spacing:.22em}
     .fold{display:none}
-    .top{align-items:center}
     .tagline{display:none}
     .navbody{display:none}
-    aside.menu .navbody{display:block;padding-bottom:16px}
+    aside.menu .navbody{display:block;padding-bottom:32px}
     .meta{margin:4px 0 16px}
+    .meta a,.meta #theme{min-height:44px;display:inline-flex;align-items:center}
+    .vt button{min-height:44px;padding:10px 16px}
+    .sel .all{min-height:44px;display:inline-flex;align-items:center}
+    .about dd a{min-height:44px;display:inline-flex;align-items:center;border-bottom:0;text-decoration:underline;text-underline-offset:4px}
+    .copy{min-height:44px;padding:0 12px;display:inline-flex;align-items:center}
     main{margin:0;padding:24px 16px 64px;min-height:0}
     /* the exhibition fills exactly what the menu bar leaves, so only the frame scrolls */
     body.lbv-on{display:flex;flex-direction:column;height:100svh}
@@ -195,17 +228,28 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
     .lbv{flex:1;display:flex;flex-direction:column}
     .lbv iframe{height:auto;flex:1}
     .grid{grid-template-columns:1fr 1fr;--g:10px}
+    .grid.solo{grid-template-columns:1fr}
     .cat{scroll-margin-top:84px}
     .grid figcaption{font-size:10px;letter-spacing:0;gap:6px}
   }
-  /* home: a preview of each section */
-  .intro{display:grid;grid-template-columns:clamp(160px,20vw,270px) 1fr 1fr;gap:clamp(24px,3vw,40px);align-items:start;margin-bottom:clamp(72px,10vw,140px)}
+  /* home: intro, featured L'Boulevard exhibition strip, and a preview of each section */
+  .intro{display:grid;grid-template-columns:clamp(160px,18vw,240px) minmax(0,1fr) minmax(0,1fr);gap:14px clamp(24px,3vw,40px);align-items:start;margin-bottom:clamp(40px,5vw,64px)}
   .intro img{display:block;width:100%;aspect-ratio:1;object-fit:cover;grid-row:span 2}
-  .intro .name{font-weight:300;font-size:clamp(40px,4.4vw,64px);line-height:1.12;letter-spacing:-.01em}
-  .intro .roles{font-size:clamp(18px,1.6vw,22px);line-height:1.3;padding-top:6px}
-  .intro .roles small{display:block;font-size:13px;color:var(--soft);margin:4px 0 8px}
-  .intro .bio{grid-column:2/-1;max-width:60ch;font-size:clamp(16px,1.3vw,19px);line-height:1.5;color:var(--soft)}
-  @media (max-width:900px){.intro{grid-template-columns:clamp(120px,30vw,200px) 1fr}.intro img{grid-row:auto}.intro .roles,.intro .bio{grid-column:1/-1}}
+  .intro .name{font-weight:300;font-size:clamp(36px,4.2vw,60px);line-height:1.08;letter-spacing:-.01em}
+  .intro .roles{font-size:clamp(17px,1.5vw,21px);line-height:1.3;padding-top:4px}
+  .intro .roles small{display:block;margin-top:6px;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--mute)}
+  .intro .bio{grid-column:2/-1;max-width:58ch;font-size:clamp(15px,1.25vw,18px);line-height:1.5;color:var(--soft)}
+  @media (max-width:1100px){.intro{grid-template-columns:clamp(140px,22vw,200px) minmax(0,1fr)}.intro img{grid-row:span 3}.intro .roles,.intro .bio{grid-column:2}}
+  @media (max-width:560px){.intro{grid-template-columns:112px minmax(0,1fr);gap:14px 18px}.intro img{grid-row:auto}.intro .roles,.intro .bio{grid-column:1/-1}}
+  .lbv-feat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:20px 28px;align-items:center;padding:20px clamp(18px,2.4vw,28px);margin-bottom:clamp(48px,6vw,84px);background:#251726;color:#eeffe5;border:1px solid rgba(238,255,229,.16);transition:border-color .2s}
+  .lbv-feat:hover,.lbv-feat:focus-visible{border-color:#337aff}
+  .lbv-feat .k{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#3d81ff}
+  .lbv-feat h2{font-weight:400;font-size:clamp(26px,2.8vw,38px);line-height:1.05;letter-spacing:-.01em;margin:6px 0}
+  .lbv-feat .meta-line{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:rgba(238,255,229,.7)}
+  .lbv-feat .cta{display:inline-block;margin-top:14px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#eeffe5;border-bottom:1px solid #337aff;padding-bottom:3px}
+  .lbv-feat .prints{display:flex;align-items:flex-end;gap:10px}
+  .lbv-feat .prints img{display:block;height:clamp(84px,9vw,124px);width:auto;box-shadow:0 12px 24px -10px rgba(8,4,9,.75)}
+  @media (max-width:960px){.lbv-feat{grid-template-columns:1fr}.lbv-feat .prints img{height:clamp(76px,18vw,112px)}}
   .sel{margin-top:clamp(72px,10vw,140px);padding-top:28px;border-top:1px solid var(--line)}
   .home .sel:first-of-type{margin-top:0;padding-top:0;border-top:0}
   .sel-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px;margin-bottom:28px}
@@ -233,7 +277,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||(m
   </div>
   <div class="navbody" id="navbody">
     <nav class="meta mono" aria-label="About">
-      <a href="#about">about</a><a href="https://www.instagram.com/_skimart_/">instagram ↗</a>
+      <a href="#about">about</a><a href="mailto:ghoujlamimohamed@gmail.com">email</a><a href="https://www.instagram.com/_skimart_/">instagram ↗</a>
       <button id="theme" type="button"></button>
     </nav>
     <h2 class="wh" id="wh">Portfolio</h2>
@@ -264,7 +308,7 @@ const WORK = [
     {id:'jazz', group:'Music', name:'Jazz', th:'jazz-0037-2', info:'American Arts Center · 16.05.2025', imgs:["jazz-0037-2", "jazz-8843", "jazz-8933", "jazz-8859", "jazz-0005", "jazz-0032", "jazz-8819", "x212203_272216", "x419019_144295", "x100262_436316", "x779934_841075", "x171283_202206", "x924209_35169", "x86830_191438", "x598080_647526", "jazz-8801", "jazz-8800", "jazz-0053", "jazz-0054", "jazz-0076", "jazz-0011-2"]},
     {id:'augmented-cube', group:'Music', name:'Augmented Cube', th:'augmented-cube-9433-2', info:'American Arts Center · 30.05.2025', imgs:["augmented-cube-9433", "augmented-cube-9452", "augmented-cube-9453", "augmented-cube-9601", "augmented-cube-9640", "augmented-cube-9641"]},
     {id:'majid-bekkas', group:'Music', name:'Majid Bekkas', th:'majid-bekkas-0203', info:'American Arts Center · 11.04.2026', imgs:["majid-bekkas-0077", "majid-bekkas-0203", "majid-bekkas-0184", "majid-bekkas-0230", "majid-bekkas-0187", "majid-bekkas-0235", "majid-bekkas-0227", "majid-bekkas-0225"]},
-    {id:'summer-sessions', group:'Music', name:'Summer Sessions', th:'x19901_61074', info:'liquid.bridge · Seamens Club Casablanca · 22.08.2026', imgs:["x627811_787172", "x212123_298179", "x429051_116215", "x19901_61074", "x598590_156911", "x501188_613690", "x227090_463441", "x316163_761898", "x823059_615258", "x613504_703056", "x609377_644968", "x980983_323513", "x562246_550939", "x996677_378388", "x520530_220013", "x241472_359800", "x738420_540762"]},
+    {id:'summer-sessions', group:'Music', name:'Summer Sessions', th:'x19901_61074', info:"liquid.bridge · Seamen's Club Casablanca · 22.08.2026", imgs:["x627811_787172", "x212123_298179", "x429051_116215", "x19901_61074", "x598590_156911", "x501188_613690", "x227090_463441", "x316163_761898", "x823059_615258", "x613504_703056", "x609377_644968", "x980983_323513", "x562246_550939", "x996677_378388", "x520530_220013", "x241472_359800", "x738420_540762"]},
     {id:'megaran-nanofunk', group:'Music', name:'Mega Ran & Nanofunk', th:'megaran-nanofunk-0006', info:'American Arts Center · 02.05.2026', imgs:["megaran-nanofunk-0006", "megaran-nanofunk-0055", "megaran-nanofunk-0097", "megaran-nanofunk-0124", "megaran-nanofunk-0128", "megaran-nanofunk-0129"]},
     {id:'gnawa', group:'Music', name:'Qamoum', th:'gnawa-1165-3', info:'American Arts Center · 16.03.2025', imgs:["gnawa-1165", "gnawa-1166", "gnawa-1187", "gnawa-1259", "gnawa-1277", "gnawa-1359"]},
     {id:'nanofunk', group:'Music', name:'Nanofunk', th:'nanofunk-0003', info:'American Arts Center · 28.07.2025', imgs:["x369338_339662", "x212033_187187", "x374118_196552", "x310513_96852"]},
@@ -279,9 +323,9 @@ const WORK = [
     {id:'foton-opening', group:'Cocktail Station', name:'Foton Opening', th:'foton-opening-0057', info:'22.10.2026', imgs:["foton-opening-0023", "foton-opening-0024", "foton-opening-0035", "foton-opening-0038", "foton-opening-0041", "foton-opening-0051", "foton-opening-0057", "foton-opening-0069", "foton-opening-0073", "foton-opening-0144", "foton-opening-0440", "foton-opening-0152", "foton-opening-0156", "foton-opening-0159", "foton-opening-0161", "foton-opening-0164", "foton-opening-0173", "foton-opening-0174", "foton-opening-0177", "foton-opening-0199", "foton-opening-0217", "foton-opening-0253", "foton-opening-0255", "foton-opening-0256", "foton-opening-0274", "foton-opening-0275", "foton-opening-0300", "foton-opening-0304", "foton-opening-0375", "foton-opening-0380", "foton-opening-0405", "foton-opening-0409"]},
   ]},
   {id:'design', name:'Design', projects:[
-    {id:'aac', th:'design-aac', name:'American Art Center', info:'Poster design', poster:true, imgs:['x815196_567852','x190932_899304','x905172_741900','x913199_406854','x276823_230940','x980645_442674','x885431_556498']},
+    {id:'aac', th:'design-aac', name:'American Arts Center', info:'Poster design', poster:true, imgs:['x815196_567852','x190932_899304','x905172_741900','x913199_406854','x276823_230940','x980645_442674','x885431_556498']},
     {id:'personal', th:'design-personal', name:'Personal project', info:'Poster design · C-01 – C-04', poster:true, cats:[
-      {name:'C-01', info:'Some of my personal project that explores Medieval, Gothic, Renaissance, and Oriental aesthetics and methodology.', imgs:['x609322_253534','x270757_649230','x746891_663120','x109724_353827','x118493_85813','x631743_861109']},
+      {name:'C-01', info:'Personal projects exploring Medieval, Gothic, Renaissance, and Oriental aesthetics and methodology.', imgs:['x609322_253534','x270757_649230','x746891_663120','x109724_353827','x118493_85813','x631743_861109']},
       {name:'C-02', info:'', imgs:['x99638_123460','x920834_698237','x392680_933255','x416801_359515']},
       {name:'C-03', info:'', imgs:['x542415_54580','x611198_115804','x799846_204911','x498923_828204','x706985_590407','x16309_49896','x341207_892313']},
       {name:'C-04', info:'', imgs:['x345557_230798','x569067_495874','x560715_265379','x216139_42263','x527500_851389','x627351_372270','x91009_432688','x637025_367152','x708231_215066','x73419_897462','x757374_212963','x349515_978978']}]},
@@ -289,14 +333,14 @@ const WORK = [
     {id:'fan', th:'design-fan', name:'Fan poster', info:"I'm not a human", poster:true, imgs:['x604559_348740','x604084_219457']},
   ]},
   {id:'workshops', name:'Workshops', projects:[
-    {id:'poster-making', name:'Poster Making', info:'American Art Center · 13.02.2026', imgs:['x445340_902249','x750391_208495','x463316_135014','x608178_340387','x966483_675540','x378905_706440','x159531_109084','x576486_848455','x590370_229934','x657530_129159','x870785_903164','x441912_785005','x604999_281541','x823397_694830','x981258_215238','x848905_789179']},
+    {id:'poster-making', name:'Poster Making', info:'American Arts Center · 13.02.2026', imgs:['x445340_902249','x750391_208495','x463316_135014','x608178_340387','x966483_675540','x378905_706440','x159531_109084','x576486_848455','x590370_229934','x657530_129159','x870785_903164','x441912_785005','x604999_281541','x823397_694830','x981258_215238','x848905_789179']},
   ]},
 ];
 
 const nav = document.getElementById('work'), view = document.getElementById('view');
 let no = 0;
 const row = (name, th, extra = '') => `<span class="no">${String(++no).padStart(2, '0')}</span><span class="nm">${name}${extra}</span><img class="th" src="assets/home/t/${th}.jpg" alt="" loading="lazy"><span class="go" aria-hidden="true">↘</span>`;
-const item = (s, p) => `<li><a href="#${s.id}/${p.id}" title="${p.name}"${p.poster ? ' class="pst"' : p.boulevard ? ' class="glink"' : ''}>${row(p.name.toLowerCase(), p.th || (p.imgs || p.cats[0].imgs)[0], p.boulevard ? '<span class="ex mono">exhibition</span>' : '')}</a></li>`;
+const item = (s, p) => `<li><a href="#${s.id}/${p.id}" title="${p.name}"${p.poster ? ' class="pst"' : p.boulevard ? ' class="glink"' : ''}>${row(p.name, p.th || (p.imgs || p.cats[0].imgs)[0], p.boulevard ? '<span class="ex mono">exhibition</span>' : '')}</a></li>`;
 const toggle = (id, label, n, cls) => `<button class="tog ${cls}" aria-expanded="false" aria-controls="${id}"><span>${label}<span class="n mono">${n}</span></span><span class="pm" aria-hidden="true">+</span></button>`;
 const ARCHIVE_IN_MENU = false;  // the archive still works at #photography/archive; true puts its row back in the menu
 nav.innerHTML = WORK.map(s => {
@@ -309,7 +353,7 @@ nav.innerHTML = WORK.map(s => {
   // every section opens on its selected work; the archive row (photography) is off for now
   const arch = `<li><a class="selw" href="#${s.id}"><span>selected work</span><span class="n"></span></a></li>`
     + (ARCHIVE_IN_MENU && s.id === 'photography' ? '<li><a class="arch" href="#photography/archive"><span>archive · all photos</span><span class="n"></span></a></li>' : '');
-  return `<div class="sec" data-sec="${s.id}">${toggle('l-' + s.id, s.name, groups[0] ? groups.length : s.projects.length, 'sbtn')}
+  return `<div class="sec" data-sec="${s.id}">${toggle('l-' + s.id, s.name, s.projects.length, 'sbtn')}
     <div class="list" id="l-${s.id}"><div><ul class="mono">${arch}${body}</ul></div></div></div>`;
 }).join('');
 
@@ -320,12 +364,18 @@ nav.addEventListener('click', e => {
 const fold = document.getElementById('fold');
 const foldLabel = () => { const f = root.dataset.nav === 'fold'; fold.setAttribute('aria-expanded', !f); fold.setAttribute('aria-label', f ? 'Open menu' : 'Collapse menu'); };
 fold.onclick = () => { root.dataset.nav = root.dataset.nav === 'fold' ? '' : 'fold'; try { localStorage.setItem('skm-nav', root.dataset.nav); } catch (e) {} foldLabel(); };
-document.querySelector('.burger').onclick = e => {
-  const m = document.getElementById('side').classList.toggle('menu'); e.target.setAttribute('aria-expanded', m);
-};
+const burger = document.querySelector('.burger');
+const setMenu = open => { document.getElementById('side').classList.toggle('menu', open); burger.setAttribute('aria-expanded', open); burger.textContent = open ? 'CLOSE' : 'MENU'; };
+burger.onclick = () => setMenu(!document.getElementById('side').classList.contains('menu'));
 
 const cap = (i, cam) => `<figcaption><span class="no">${String(i + 1).padStart(2, '0')}</span><span class="cam">${(cam || '').replace(/^(.+? · .+?) · /, '$1<br>')}</span></figcaption>`;
-const grid = (p, imgs) => `<div class="grid ${p.poster ? 'poster' : ''}">${imgs.map((f, i) => `<figure data-zoom data-cam="${LABELS[f] || ''}" tabindex="0" role="button" aria-label="Enlarge ${p.poster ? 'poster' : 'photo'} ${i + 1}"><img src="${F(f)}" alt="${p.name}, ${p.poster ? 'poster' : 'photo'} ${i + 1}" loading="lazy">${p.poster ? '' : cap(i, LABELS[f])}</figure>`).join('')}</div>`;
+const grid = (p, imgs, lead = false) => `<div class="grid${p.poster ? ' poster' : ''}${imgs.length === 1 ? ' solo' : imgs.length <= 4 ? ' small' : ''}${lead && !p.poster && imgs.length >= 5 ? ' lead' : ''}">${imgs.map((f, i) => `<figure data-zoom data-cam="${LABELS[f] || ''}" tabindex="0" role="button" aria-label="Enlarge ${p.poster ? 'poster' : 'photo'} ${i + 1}"><img src="${F(f)}" alt="${p.name}, ${p.poster ? 'poster' : 'photo'} ${i + 1}" ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">${p.poster ? '' : cap(i, LABELS[f])}</figure>`).join('')}</div>`;
+const toTop = n => n >= 15 ? '<button class="totop" type="button">↑ back to top</button>' : '';
+const pnav = (sec, p) => {
+  const i = sec.projects.indexOf(p), prev = sec.projects[i - 1], next = sec.projects[i + 1];
+  if (!prev && !next) return '';
+  return `<nav class="pnav" aria-label="More in ${sec.name}">${prev ? `<a class="prev" href="#${sec.id}/${prev.id}"><small>← previous</small><span>${prev.name}</span></a>` : ''}${next ? `<a class="next" href="#${sec.id}/${next.id}"><small>next →</small><span>${next.name}</span></a>` : ''}</nav>`;
+};
 // each figure spans as many 1px rows as it is tall (+ the gap); re-run whenever a photo loads or the column width changes
 // a deep link (#design/personal/c-02) is re-scrolled as the photos above it get their height, until the visitor scrolls themselves
 let goTo = null; ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, () => goTo = null, {passive: true}));
@@ -335,11 +385,17 @@ let shown;  // the route last animated in
 const VT = '<div class="vt mono" role="group" aria-label="Layout"><button type="button" data-v="">grid</button><button type="button" data-v="list">list</button></div>';
 const vtSync = () => view.querySelectorAll('.vt button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === (root.dataset.view || '')));
 view.addEventListener('click', e => {
+  if (e.target.closest('.totop')) { scrollTo({top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'}); return; }
+  const cp = e.target.closest('.copy[data-copy]');
+  if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => { cp.textContent = 'copied'; setTimeout(() => cp.textContent = 'copy', 1800); }).catch(() => {}); return; }
   const b = e.target.closest('.vt button'); if (!b || b.dataset.v === (root.dataset.view || '')) return;
   root.dataset.view = b.dataset.v; try { localStorage.setItem('skm-view', b.dataset.v); } catch (err) {} vtSync();
   view.querySelectorAll('.grid').forEach(g => g.animate({opacity: [0, 1]}, {duration: 200, easing: 'cubic-bezier(0.23, 1, 0.32, 1)'}));  // the layout swap would jump
 });
-const settle = () => { vtSync(); view.querySelectorAll('img').forEach(i => i.complete ? i.classList.add('in') : i.onload = () => i.classList.add('in'));
+const settle = () => { vtSync(); view.querySelectorAll('img').forEach(i => {
+    const done = () => { i.classList.add('in'); const f = i.closest('.grid.lead figure:first-child'); if (f && i.naturalWidth > i.naturalHeight * 1.1) f.classList.add('wide'); };
+    i.complete ? done() : i.onload = done;
+  });
   mason.disconnect(); view.querySelectorAll('.grid figure').forEach(f => mason.observe(f)); };
 const archive = () => import('./assets/archive/archive.js');
 // the selection: photos ticked "featured" in tools/tag.html; until some are, each photography page's menu photo.
@@ -362,7 +418,8 @@ const sectionList = sec => {
 };
 const fill = (g, list, max) => {
   const caps = !g.matches('.poster');  // Selected work, here and on the home page, numbers its photos and gives their settings, like a project page
-  g.innerHTML = list.slice(0, max).map((p, i) => `<figure data-zoom data-cam="${p.cam}" data-from-href="#${p.href}" data-from-label="${p.label}"${p.mat ? ' data-mat' : ''} tabindex="0" role="button" aria-label="Enlarge ${p.alt}"><img src="${p.thumb}" data-full="${p.full}" alt="${p.alt}" loading="lazy">${caps ? cap(i, p.cam) : ''}</figure>`).join('');
+  g.innerHTML = list.slice(0, max).map((p, i) => `<figure data-zoom data-cam="${p.cam}" data-from-href="#${p.href}" data-from-label="${p.label}"${p.mat ? ' data-mat' : ''} tabindex="0" role="button" aria-label="Enlarge ${p.alt}"><img src="${p.thumb}" data-full="${p.full}" alt="${p.alt}" loading="lazy" decoding="async">${caps ? cap(i, p.cam) : ''}</figure>`).join('');
+  if (max === Infinity && list.length >= 15 && !g.parentElement.querySelector('.totop')) g.insertAdjacentHTML('afterend', toTop(list.length));
   settle();
 };
 const preview = (g, sid, max = Infinity) => sid === 'photography'
@@ -382,55 +439,65 @@ function openSec(id){ const s = nav.querySelector(`[data-sec="${id}"]`); if (s) 
 
 function render(){
   const [path, query = ''] = location.hash.slice(1).split('?'), [sid, pid, room] = path.split('/');
+  const wasLbv = document.body.classList.contains('lbv-on');
   document.body.classList.remove('lbv-on');
+  if (wasLbv) { try { root.dataset.nav = localStorage.getItem('skm-nav') || ''; } catch (err) {} foldLabel(); }
   document.querySelectorAll('aside a[aria-current]').forEach(a => a.removeAttribute('aria-current'));
   const sec = WORK.find(s => s.id === sid), p = sec && sec.projects.find(x => x.id === pid);
   if (sid === 'about') {
+    document.title = 'About — SKIMART';
     document.querySelector('.meta a[href="#about"]').setAttribute('aria-current', 'page');
     view.innerHTML = `<section class="proj about"><h2>About</h2><p class="info">Photographer / Visual Artist · Casablanca, Morocco</p>
-      <div class="photo" data-zoom tabindex="0" role="button" aria-label="Enlarge photo"><img src="${F('soualem-0002-2')}" alt="Wheat field at dusk in Soualem, a clump of trees on the horizon under a blue sky and a low bank of cloud"></div>
+      <div class="photo" data-zoom tabindex="0" role="button" aria-label="Enlarge photo"><img src="${F('soualem-0002-2')}" alt="Wheat field at dusk in Soualem, a clump of trees on the horizon under a blue sky and a low bank of cloud" fetchpriority="high" decoding="async"></div>
       <p class="big">Real moments.<br>Visual stories.</p>
       <p>I'm Mohamed Ghoujlami, aka SKIMART. I capture people, places and culture through photography, design and visual storytelling.</p>
-      <p class="todo">Placeholder: your longer story goes here (how you started, what you look for in a picture). Send the text and it replaces this line.</p>
       <dl><dt>Photography</dt><dd>Live music, portraits, street photography, cultural documentation</dd>
       <dt>Graphic design</dt><dd>Posters, visual identities, editorial compositions</dd>
-      <dt>Contact</dt><dd><a href="mailto:ghoujlamimohamed@gmail.com">ghoujlamimohamed@gmail.com</a><br><a href="https://www.instagram.com/_skimart_/">@_skimart_ on Instagram ↗</a></dd></dl></section>`;
-    document.getElementById('side').classList.remove('menu');
+      <dt>Contact</dt><dd><a href="mailto:ghoujlamimohamed@gmail.com">ghoujlamimohamed@gmail.com</a><button class="copy" type="button" data-copy="ghoujlamimohamed@gmail.com">copy</button><br><a href="https://www.instagram.com/_skimart_/">@_skimart_ on Instagram ↗</a></dd></dl></section>`;
+    setMenu(false);
   } else if (sid === 'photography' && pid === 'archive') {
+    document.title = 'Archive — SKIMART';
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector('.arch')?.setAttribute('aria-current', 'page');
     if (!view.querySelector('.archive')) view.innerHTML = '<section class="proj archive"><h2>Archive</h2></section>';
     archive().then(m => m.showArchive(view, query, WORK, settle, VT));
-    document.getElementById('side').classList.remove('menu');
+    setMenu(false);
   } else if (sec && !pid) {
+    document.title = `${sec.name} — SKIMART`;
     // a whole section: photography's selection, or every design / workshop image; the home page shows the first few
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector(`[data-sec="${sid}"] .selw`).setAttribute('aria-current', 'page');
     const posters = sec.projects.every(q => q.poster);
-    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p><div class="tools"><p class="hint"><b>⤢</b> click any ${posters ? 'poster' : 'photo'} to enlarge</p>${posters ? '' : VT}</div><div class="grid${posters ? ' poster' : ''}"></div></section>`;
+    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p>${posters ? '' : `<div class="tools">${VT}</div>`}<div class="grid${posters ? ' poster' : ''}"></div></section>`;
     preview(view.querySelector('.grid'), sid);
-    document.getElementById('side').classList.remove('menu');
+    setMenu(false);
   } else if (!p) {
+    document.title = 'SKIMART — Photographer / Visual Artist';
     view.innerHTML = `<section class="home"><h1 class="vh">SKIMART · Photographer / Visual Artist</h1>
-      <div class="intro"><img src="${F('me')}" alt="Mohamed Ghoujlami in a wheat field at dusk, holding a lamb"><p class="name">Mohamed<br>Ghoujlami</p><p class="roles">Photographer, graphic&nbsp;designer<small>Who takes photos of the streets, live music events, and portraits</small></p><p class="bio">I'm Mohamed Ghoujlami, aka SKIMART, based in Casablanca, Morocco. I capture people, places and culture through photography, design and visual storytelling.</p></div>
+      <div class="intro"><img src="${F('me')}" alt="Mohamed Ghoujlami in a wheat field at dusk, holding a lamb" fetchpriority="high" decoding="async"><p class="name">Mohamed<br>Ghoujlami</p><p class="roles">Photographer, graphic&nbsp;designer<small>Casablanca, Morocco</small></p><p class="bio">I capture people, places and culture through photography, design and visual storytelling — streets, live music and portraits.</p></div>
+      <a class="lbv-feat" href="#photography/boulevard"><div><span class="k mono">Exhibition · 3 rooms</span><h2>L'Boulevard</h2><p class="meta-line mono">Metal Day · Casablanca · 2025–2026 · Movement · Connection · Faces and Eyes</p><span class="cta mono">enter exhibition →</span></div><div class="prints" aria-hidden="true"><img src="${LBV}Movement/images/mov-25-9206.jpg" alt=""><img src="${LBV}Band/images/frame-03.jpg" alt=""><img src="${LBV}Faces/images/fac-25-9304.jpg" alt=""></div></a>
       ${WORK.map(x => `<section class="sel" data-for="${x.id}" aria-labelledby="sel-${x.id}"><div class="sel-head"><h2 id="sel-${x.id}"><a href="#${x.id}">${x.name}</a></h2><a class="all" href="#${x.id}">see all →</a></div><div class="grid pre${x.projects.every(q => q.poster) ? ' poster' : ''}"></div></section>`).join('')}</section>`;
     spyAt = null; view.querySelectorAll('.sel').forEach(x => preview(x.querySelector('.grid'), x.dataset.for, 6));
     if (sid) openSec(sid);
+    setMenu(false);
   } else {
+    document.title = `${p.name} — SKIMART`;
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false));  // only the open project's section and group stay unfolded
     openSec(sid);
     const cur = nav.querySelector(`a[href="#${sid}/${pid}"]`); cur.setAttribute('aria-current', 'page');
     const g = cur.closest('.gsec'); if (g && g.querySelector(':scope>.tog')) setOpen(g, true);
     if (p.boulevard) {
       document.body.classList.add('lbv-on');
+      // auto-fold desktop sidebar so the exhibition gets the full gallery wall; manual fold still works
+      root.dataset.nav = 'fold'; foldLabel();
       // same rule as the exhibition's theme.js, so the frame and the portfolio agree before it loads
-      try { document.body.dataset.lbv = localStorage.getItem('lbv-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); } catch (err) {}
+      try { document.body.dataset.lbv = localStorage.getItem('skm-theme') || localStorage.getItem('lbv-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); } catch (err) {}
     }
     view.innerHTML = p.boulevard
       // the exhibition's own pages run in a frame, so its rooms open here instead of leaving the portfolio
       ? `<section class="lbv"><iframe src="${LBV}${room ? room + '/' : ''}index.html" title="L'Boulevard exhibition"></iframe></section>`
-      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p><div class="tools"><p class="hint"><b>⤢</b> click any photo to enlarge</p>${p.poster ? '' : VT}</div>${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs)}</section>`;
-    document.getElementById('side').classList.remove('menu');
+      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p>${p.poster ? '' : `<div class="tools">${VT}</div>`}${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs, true)}${toTop(p.cats ? p.cats.reduce((n, c) => n + c.imgs.length, 0) : p.imgs.length)}${pnav(sec, p)}</section>`;
+    setMenu(false);
   }
   const now = [sid, pid, room].join('/');  // the route without filters: the archive re-filtering is not a new page
   if (now !== shown) view.animate(matchMedia('(prefers-reduced-motion: reduce)').matches ? [{opacity: 0}, {opacity: 1}]
@@ -443,16 +510,16 @@ function render(){
 // mirror the exhibition's light/dark choice onto the portfolio while it is open (same origin, so the frame is readable)
 view.addEventListener('load', e => {
   if (e.target.tagName !== 'IFRAME') return;
-  let root; try { root = e.target.contentDocument.documentElement; } catch (err) { return; }  // file:// blocks frame access
+  let froot; try { froot = e.target.contentDocument.documentElement; } catch (err) { return; }  // file:// blocks frame access
   const dir = new URL('.', e.target.contentWindow.location.href).href, base = new URL(LBV, location.href).href;
   if (dir.startsWith(base)) { const r = dir.slice(base.length).replace(/\/$/, ''); history.replaceState(null, '', '#photography/boulevard' + (r ? '/' + r : '')); }
-  const sync = () => document.body.dataset.lbv = root.dataset.theme || 'dark';
-  sync(); new MutationObserver(sync).observe(root, {attributes: true, attributeFilter: ['data-theme']});
+  const sync = () => { const t = froot.dataset.theme || 'dark'; document.body.dataset.lbv = t; root.dataset.theme = t; themeLabel(); };
+  sync(); new MutationObserver(sync).observe(froot, {attributes: true, attributeFilter: ['data-theme']});
 }, true);
 
 const themeBtn = document.getElementById('theme'), root = document.documentElement;
 const themeLabel = () => { const l = root.dataset.theme === 'light'; themeBtn.textContent = l ? 'dark' : 'light'; themeBtn.setAttribute('aria-label', `Switch to ${l ? 'dark' : 'light'} theme`); };
-themeBtn.onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; try { localStorage.setItem('skm-theme', root.dataset.theme); } catch (e) {} themeLabel(); };
+themeBtn.onclick = () => { root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light'; try { localStorage.setItem('skm-theme', root.dataset.theme); localStorage.setItem('lbv-theme', root.dataset.theme); } catch (e) {} themeLabel(); };
 themeLabel(); foldLabel();
 
 // lightbox: click a photo → full screen; click again → 2× zoom that follows the pointer
@@ -464,6 +531,7 @@ const show = i => { at = (i + set.length) % set.length; lbs.classList.remove('z'
   lbi.src = set[at].dataset.full || set[at].src; lbi.alt = set[at].alt; const cam = set[at].parentElement.dataset.cam;
   const fig = set[at].parentElement, from = document.getElementById('lb-from');  // archive photos link back to their project or room
   from.hidden = !fig.dataset.fromHref; from.href = fig.dataset.fromHref || ''; from.textContent = 'see all →';
+  document.getElementById('lb-p').hidden = document.getElementById('lb-n').hidden = set.length <= 1;
   document.getElementById('lb-t').textContent = fig.dataset.fromLabel || title;  // the photo's own page names it, once
   document.getElementById('lb-c').textContent = `${at + 1} / ${set.length}` + (cam ? ' · ' + cam : ''); };
 // the title starts where the photo does (offsetLeft ignores the zoom and opening transforms; the header has 20 px padding)
