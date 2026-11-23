@@ -14,16 +14,24 @@
 <header>
   <h1>Page editor</h1>
   <select id="page" aria-label="Page"></select>
+  <a id="open" href="../" target="_blank" rel="noopener">view ↗</a>
   <button id="new" type="button">new page</button>
   <button id="rename" type="button">rename</button>
+  <button id="editinfo" type="button">edit info</button>
   <label class="add">add photos<input type="file" id="files" accept="image/jpeg" multiple></label>
   <label class="add" id="thadd">menu photo from a file<input type="file" id="thfile" accept="image/jpeg"></label>
   <span id="thnow" hidden>menu: <img alt="Menu photo, not shown on the page"></span>
   <span id="status" aria-live="polite"></span>
+  <button id="undo" type="button" disabled title="Undo (Ctrl+Z)">undo</button>
+  <button id="discard" type="button" hidden>discard</button>
   <button id="save">Save</button>
 </header>
 <div id="errors" role="alert"></div>
-<p class="how">Drag a photo (or use ← →) to move it · × removes it · <b>menu</b> makes it the page's menu photo (or pick one from a file: only the menu shows it) · ★ puts it in the home preview and the Photography page. Page order: drag a page (or ← →) inside its group, ↑ ↓ moves a whole group.</p>
+<div class="subbar">
+  <span id="counts"></span>
+  <p class="how">Click photo to cull · Drag or ← → to move · Drop JPEGs to add · Ctrl+Z undoes · <b>#1</b> sends first · ★ = Selected (1–6 on Home).</p>
+  <div class="sizes" role="group" aria-label="Tile size"><button type="button" data-sz="s">S</button><button type="button" data-sz="m" aria-pressed="true">M</button><button type="button" data-sz="l">L</button></div>
+</div>
 <ol class="tiles" aria-label="Photos of this page, in order"></ol>
 <dialog id="newdlg" aria-labelledby="newh"><form method="dialog" id="newform">
   <h2 id="newh">New page</h2>
@@ -34,6 +42,26 @@
   <p id="nerr" role="alert"></p>
   <div class="row"><button value="cancel" formnovalidate>cancel</button><button value="ok" class="go">create</button></div>
 </form></dialog>
+<dialog id="infodlg" aria-labelledby="infoh"><form method="dialog" id="infoform">
+  <h2 id="infoh">Page details</h2>
+  <label>line under the title <input id="ival" autocomplete="off" placeholder="e.g. American Arts Center · 16.05.2025"></label>
+  <label id="igrpwrap">menu group <input id="igrp" list="groups" autocomplete="off"></label>
+  <div class="row"><button type="button" id="delpage" class="danger">delete page</button><span class="spacer"></span><button value="cancel" formnovalidate>cancel</button><button value="ok" class="go">update</button></div>
+</form></dialog>
+<dialog id="preview" aria-label="Photo preview">
+  <div class="pv-top">
+    <span id="pv-cap"></span>
+    <div class="pv-acts">
+      <button type="button" id="pv-capbtn" title="Edit camera line / caption">caption</button>
+      <button type="button" id="pv-first" title="Make #1 (1)">#1</button>
+      <button type="button" id="pv-th" title="Set menu cover (M)">menu</button>
+      <button type="button" id="pv-star" title="Selected work (S)">☆</button>
+      <button type="button" id="pv-del" title="Remove photo (Del)">remove</button>
+      <button type="button" id="pv-x" aria-label="Close">×</button>
+    </div>
+  </div>
+  <div class="pv-stage"><button type="button" id="pv-p" aria-label="Previous">←</button><img id="pv-img" alt=""><button type="button" id="pv-n" aria-label="Next">→</button></div>
+</dialog>
 <script type="module" src="pages.js"></script>
 </body>
 </html>

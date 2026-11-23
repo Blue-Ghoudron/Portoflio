@@ -1,17 +1,46 @@
 // Page editor: arrange a page's photos by hand, then save straight into the site folder (Chrome/Edge).
 // The text edits live in pages-core.js; this file is the page and the file writing.
-import { readWork, readLabels, writeLabels, editIndex, bumpLabels, editPhotos, photosJson, newId, cameraLine, readSelected, editSelected, selection, insertProject, orderProjects, slug } from './pages-core.js';
+import { readWork, readLabels, writeLabels, editIndex, bumpLabels, editPhotos, photosJson, newId, cameraLine, readSelected, editSelected, selection, insertProject, orderProjects, deleteProject, slug } from './pages-core.js';
 
 const $ = s => document.querySelector(s), tiles = $('.tiles');
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'})[c]);
 // edits: page key -> working copy {sid, p, cat, imgs, th, orig, touched}, 'selected|<section>' -> its Selected work, 'order|<section>' -> its page order; added: new id -> its pictures and camera line
-let WORK, labels, photos, picked, edits = new Map(), added = {}, dir = null, dirty = false;
+let WORK, labels, photos, picked, edits = new Map(), added = {}, labelEdits = {}, deletedPages = [], dir = null, dirty = false, undoStack = [], pvAt = 0;
+
+function snapshot(){
+  const snap = {key: $('#page').value, labelEdits: {...labelEdits}, entries: [...edits.entries()].map(([k, v]) => [k, {
+    ...v, imgs: v.imgs ? [...v.imgs] : undefined, groups: v.groups ? v.groups.map(g => ({...g, ids: [...g.ids]})) : undefined,
+    pName: v.p?.name, pInfo: v.info, pGroup: v.group
+  }])};
+  undoStack.push(snap); if (undoStack.length > 40) undoStack.shift();
+  syncBar();
+}
+function syncBar(){ $('#undo').disabled = !undoStack.length; $('#discard').hidden = !dirty; }
+function doUndo(){
+  const snap = undoStack.pop(); if (!snap) return;
+  labelEdits = {...snap.labelEdits};
+  for (const [k, s] of snap.entries) {
+    const cur = edits.get(k); if (!cur) continue;
+    if (s.imgs) cur.imgs = s.imgs;
+    if (s.groups) cur.groups = s.groups;
+    cur.th = s.th; cur.touched = s.touched; cur.info = s.pInfo; cur.group = s.pGroup;
+    if (cur.p) {
+      if (s.pName !== undefined) cur.p.name = s.pName;
+      if (s.pGroup !== undefined) cur.p.group = s.pGroup;
+    }
+  }
+  dirty = deletedPages.length > 0 || Object.keys(labelEdits).length > 0 || [...edits.values()].some(e => e.touched);
+  options(); if ([...$('#page').options].some(o => o.value === snap.key)) $('#page').value = snap.key;
+  $('#status').textContent = dirty ? 'undone (unsaved changes)' : 'undone';
+  syncBar(); draw();
+  if ($('#preview').open) { const e = page(); if (!e.imgs?.length) $('#preview').close(); else openPreview(Math.min(pvAt, e.imgs.length - 1)); }
+}
 
 async function load(){
   const get = f => fetch('../' + f, {cache: 'no-store'}).then(r => r.text()), keep = $('#page').value;
   const [html, lab, ph] = await Promise.all([get('index.html'), get('assets/home/labels.js'), get('data/photos.json')]);
   WORK = readWork(html); labels = readLabels(lab); photos = JSON.parse(ph); const sel = readSelected(html); picked = Object.fromEntries(WORK.map(s => [s.id, selection(WORK, sel, photos, s.id)]));
-  edits = new Map(); added = {}; dirty = false;
+  edits = new Map(); added = {}; labelEdits = {}; deletedPages = []; dirty = false; undoStack = []; syncBar();
   options();
   if ([...$('#page').options].some(o => o.value === keep)) $('#page').value = keep;  // else the first page
 }
@@ -66,46 +95,79 @@ function page(){
   if (k.startsWith('order|')) return ordering(k.slice(6));
   if (!edits.has(k)) {
     const [sid, pid, cat] = k.split('|'), p = WORK.find(s => s.id === sid).projects.find(x => x.id === pid);
-    const imgs = cat ? p.cats.find(c => c.name === cat).imgs : p.imgs;
-    edits.set(k, {sid, p, cat: cat || undefined, imgs: [...imgs], th: p.th, orig: [...imgs], touched: false});
+    const catObj = cat ? p.cats.find(c => c.name === cat) : null;
+    const imgs = catObj ? catObj.imgs : p.imgs;
+    edits.set(k, {sid, p, cat: cat || undefined, imgs: [...imgs], th: p.th, info: catObj ? (catObj.info || '') : (p.info || ''), origInfo: catObj ? (catObj.info || '') : (p.info || ''), group: p.group, origGroup: p.group, orig: [...imgs], touched: false});
   }
   return edits.get(k);
 }
 
 const rec = id => photos.find(r => r.id === id);
 const isFeatured = (id, sid) => chosen(sid).imgs.includes(id);
+const captionOf = id => (id in labelEdits) ? labelEdits[id] : (added[id]?.label ?? labels[id] ?? '');
 const src = id => added[id] ? added[id].url : rec(id) ? '../' + rec(id).thumb : `../assets/home/${id}.jpg`;
+const fullSrc = id => added[id] ? added[id].url : rec(id) ? '../' + rec(id).image : `../assets/home/${id}.jpg`;
+const liveHref = e => e.order ? '../' : e.selected ? `../#${e.sid}` : `../#${e.sid}/${e.p.id}${e.cat ? '/' + e.cat.toLowerCase() : ''}`;
 
 function draw(focus){
   const e = page(), photo = !e.p.poster && !e.selected, th = e.th || e.imgs?.[0];
-  $('.add').hidden = $('#thadd').hidden = $('#rename').hidden = !!(e.selected || e.order);
+  $('.add').hidden = $('#thadd').hidden = $('#rename').hidden = $('#editinfo').hidden = !!(e.selected || e.order);
+  $('#open').href = liveHref(e);
+  $('#counts').textContent = e.order ? `${e.groups.reduce((n, g) => n + g.ids.length, 0)} pages · ${e.groups.length} group${e.groups.length === 1 ? '' : 's'}`
+    : e.selected ? `${e.imgs.length} selected · ${Math.min(6, e.imgs.length)} on Home`
+    : `${e.imgs.length} ${e.p.poster ? 'poster' : 'photo'}${e.imgs.length === 1 ? '' : 's'} · ${e.imgs.filter(id => isFeatured(id, e.sid)).length} ★`;
+  syncBar();
   const only = e.th && !e.imgs?.includes(e.th);  // a menu photo that is not on the page
   $('#thnow').hidden = !only; if (only) $('#thnow img').src = added[e.th]?.url || `../assets/home/t/${e.th}.jpg`;
   if (e.order) {  // tiles keyed "<group>.<page>", group headings "g<group>"
     const proj = id => WORK.find(s => s.id === e.sid).projects.find(p => p.id === id); let n = 0;
     tiles.innerHTML = e.groups.map((g, gi) => (g.name ? `<li class="ghead" data-i="g${gi}"><b>${esc(g.name)}</b><button data-a="up" aria-label="Move ${esc(g.name)} up">↑</button><button data-a="down" aria-label="Move ${esc(g.name)} down">↓</button></li>` : '')
-      + g.ids.map((id, i) => { const p = proj(id); return `<li draggable="true" data-i="${gi}.${i}"><img src="../assets/home/t/${esc(p.th || (p.imgs || p.cats[0].imgs)[0])}.jpg" alt="" loading="lazy">
+      + g.ids.map((id, i) => { const p = proj(id); return `<li draggable="true" data-i="${gi}.${i}"><img draggable="false" src="../assets/home/t/${esc(p.th || (p.imgs || p.cats[0].imgs)[0])}.jpg" alt="" loading="lazy">
       <div class="meta"><b>${String(++n).padStart(2, '0')}</b><span>${esc(p.name)}</span></div>
       <div class="tools"><button data-a="left" aria-label="Move ${esc(p.name)} earlier">←</button><button data-a="right" aria-label="Move ${esc(p.name)} later">→</button></div></li>`; }).join('')).join('');
-  } else tiles.innerHTML = e.imgs.map((id, i) => `<li draggable="true" data-i="${i}" data-id="${esc(id)}"${added[id] ? ' class="new"' : ''}><img src="${esc(src(id))}" alt="" loading="lazy">
-    <div class="meta"><b>${String(i + 1).padStart(2, '0')}</b><span>${esc(added[id] ? added[id].label || 'new · no camera line' : e.selected ? rec(id)?.alt || owner(id) : labels[id] || (photo ? 'no camera line' : ''))}</span></div>
-    <div class="tools"><button data-a="left" aria-label="Move ${i + 1} earlier">←</button><button data-a="right" aria-label="Move ${i + 1} later">→</button>
+  } else tiles.innerHTML = e.imgs.map((id, i) => {
+    const cls = [added[id] ? 'new' : '', e.selected && i < 6 ? 'home-pick' : ''].filter(Boolean).join(' '), cap = captionOf(id);
+    return `<li draggable="true" data-i="${i}" data-id="${esc(id)}"${cls ? ` class="${cls}"` : ''}><img draggable="false" src="${esc(src(id))}" alt="" loading="lazy">
+    <div class="meta"><b>${String(i + 1).padStart(2, '0')}</b><span>${esc(added[id] ? cap || 'new · no camera line' : e.selected ? rec(id)?.alt || owner(id) : cap || (photo ? 'no camera line' : ''))}</span>${e.selected && i < 6 ? '<span class="hbadge">home</span>' : ''}</div>
+    <div class="tools"><button data-a="left" aria-label="Move ${i + 1} earlier">←</button><button data-a="right" aria-label="Move ${i + 1} later">→</button><button data-a="first" aria-label="Send ${i + 1} first"${i === 0 ? ' disabled' : ''}>#1</button>
     ${e.selected ? '' : `<button data-a="th" aria-pressed="${th === id}">menu</button>`}${e.selected ? '' : `<button data-a="star" aria-pressed="${isFeatured(id, e.sid)}" aria-label="In Selected work">${isFeatured(id, e.sid) ? '★' : '☆'}</button>`}
-    <button class="x" data-a="x" aria-label="Remove ${i + 1}">×</button></div></li>`).join('');
+    <button class="x" data-a="x" aria-label="Remove ${i + 1}">×</button></div></li>`;
+  }).join('');
   if (focus) tiles.querySelector(`li[data-i="${focus[0]}"] [data-a="${focus[1]}"]`)?.focus();
 }
 
-const change = focus => { page().touched = true; dirty = true; $('#status').textContent = 'unsaved changes'; draw(focus); };
-const move = (from, to, a, l = page().imgs, g) => { if (to < 0 || to >= l.length || from === to) return; l.splice(to, 0, l.splice(from, 1)[0]); change(a && [g === undefined ? to : `${g}.${to}`, a]); };
+const change = focus => { page().touched = true; dirty = true; $('#status').textContent = 'unsaved changes'; syncBar(); draw(focus); };
+const move = (from, to, a, l = page().imgs, g) => { if (to < 0 || to >= l.length || from === to) return; snapshot(); l.splice(to, 0, l.splice(from, 1)[0]); change(a && [g === undefined ? to : `${g}.${to}`, a]); };
+
+function openPreview(i){
+  const e = page(); if (e.order || !e.imgs?.length) return;
+  pvAt = (i + e.imgs.length) % e.imgs.length;
+  const id = e.imgs[pvAt], th = e.th || e.imgs[0], cap = captionOf(id);
+  $('#pv-img').src = fullSrc(id);
+  $('#pv-cap').textContent = `${pvAt + 1} / ${e.imgs.length} · ${cap || rec(id)?.alt || owner(id) || id}`;
+  $('#pv-th').hidden = $('#pv-star').hidden = !!e.selected;
+  $('#pv-capbtn').hidden = !!(e.selected || e.p.poster);
+  $('#pv-first').disabled = pvAt === 0;
+  $('#pv-th').setAttribute('aria-pressed', th === id);
+  const st = isFeatured(id, e.sid);
+  $('#pv-star').setAttribute('aria-pressed', st); $('#pv-star').textContent = st ? '★' : '☆';
+  if (!$('#preview').open) $('#preview').showModal();
+}
 
 tiles.addEventListener('click', ev => {
+  if (!ev.target.closest('button') && ev.target.tagName === 'IMG' && !page().order) {
+    const li = ev.target.closest('li'); if (li) openPreview(+li.dataset.i);
+    return;
+  }
   const b = ev.target.closest('button'); if (!b) return;
   if (page().order) { const e = page(), a = b.dataset.a, [g, i] = b.closest('li').dataset.i.replace('g', '').split('.').map(Number);
     if (a === 'left' || a === 'right') return move(i, i + (a === 'left' ? -1 : 1), a, e.groups[g].ids, g);
     const t = g + (a === 'up' ? -1 : 1); if (t < 0 || t >= e.groups.length) return;
-    e.groups.splice(t, 0, e.groups.splice(g, 1)[0]); return change([`g${t}`, a]); }
+    snapshot(); e.groups.splice(t, 0, e.groups.splice(g, 1)[0]); return change([`g${t}`, a]); }
   const i = +b.closest('li').dataset.i, e = page(), id = e.imgs[i];
   if (b.dataset.a === 'left' || b.dataset.a === 'right') return move(i, i + (b.dataset.a === 'left' ? -1 : 1), b.dataset.a);
+  if (b.dataset.a === 'first') return move(i, 0, 'first');
+  snapshot();
   if (b.dataset.a === 'th') e.th = id;
   if (b.dataset.a === 'star') { const c = chosen(e.sid); c.imgs = c.imgs.includes(id) ? c.imgs.filter(x => x !== id) : [...c.imgs, id]; c.touched = true; }
   if (b.dataset.a === 'x') { e.imgs.splice(i, 1); if (e.th === id) e.th = undefined; }  // no menu photo: the menu shows the first one
@@ -132,27 +194,109 @@ const jpeg = async (bmp, w, h = w) => {
 };
 
 const takenIds = () => new Set([...WORK.flatMap(s => s.projects.flatMap(p => [p.th, ...(p.imgs || (p.cats || []).flatMap(c => c.imgs))])), ...Object.keys(labels), ...photos.map(r => r.id), ...Object.keys(added)]);
-$('#files').addEventListener('change', async ev => {
-  const e = page(), taken = takenIds();
+async function addFiles(fileList){
+  const imgs = [...fileList].filter(f => /image\/jpe?g/i.test(f.type) || /\.jpe?g$/i.test(f.name));
+  if (!imgs.length) return;
+  const e = page(); if (e.selected || e.order) return;
+  const taken = takenIds();
+  snapshot();
   $('#status').textContent = 'reading photos…';
-  for (const f of ev.target.files) {
+  for (const f of imgs) {
     const id = newId(e.p.id, f.name, taken), bmp = await createImageBitmap(f, {imageOrientation: 'from-image'}); taken.add(id);
     const big = await jpeg(bmp, 1600), cam = e.p.poster ? null : cameraLine(await f.arrayBuffer(), f.name);
     added[id] = {big, thumb: e.p.poster ? null : await jpeg(bmp, 600), url: URL.createObjectURL(big), label: cam?.label, date: cam?.date};
     e.imgs.push(id);
   }
-  ev.target.value = ''; change();
+  change();
+}
+$('#files').addEventListener('change', async ev => { await addFiles(ev.target.files); ev.target.value = ''; });
+// drag-and-drop JPEGs from Explorer / Finder straight onto the grid
+addEventListener('dragover', ev => { if (dragFrom === null && ev.dataTransfer?.types?.includes('Files') && !page().selected && !page().order) { ev.preventDefault(); tiles.classList.add('dropzone'); } });
+addEventListener('dragleave', ev => { if (!ev.relatedTarget) tiles.classList.remove('dropzone'); });
+addEventListener('drop', ev => {
+  tiles.classList.remove('dropzone');
+  if (dragFrom !== null || !ev.dataTransfer?.files?.length) return;
+  ev.preventDefault(); addFiles(ev.dataTransfer.files);
 });
 // a menu photo from a file: only its small menu copy is saved, the page, the archive and Selected work never see it
 // rename: the page's title and menu name; its address (#section/<id>) and photo files keep their id
 $('#rename').addEventListener('click', () => {
   const k = $('#page').value, e = page(), name = prompt('Page name', e.p.name)?.trim();
   if (!name || name === e.p.name) return;
-  e.p.name = name; options(); $('#page').value = k; change();
+  snapshot(); e.p.name = name; options(); $('#page').value = k; change();
 });
+$('#editinfo').addEventListener('click', () => {
+  const e = page(); if (e.selected || e.order) return;
+  $('#ival').value = e.info ?? '';
+  const hasGrp = grouped(e.sid) && !e.cat;
+  $('#igrpwrap').hidden = !hasGrp;
+  if (hasGrp) {
+    $('#groups').innerHTML = [...new Set(WORK.find(s => s.id === e.sid).projects.map(p => p.group).filter(Boolean))].map(g => `<option value="${esc(g)}">`).join('');
+    $('#igrp').value = e.group || '';
+  }
+  $('#delpage').hidden = !!e.cat;
+  $('#infodlg').showModal();
+});
+$('#infoform').addEventListener('submit', ev => {
+  if (ev.submitter?.value !== 'ok') return;
+  const e = page(), nextInfo = $('#ival').value.trim(), nextGrp = !$('#igrpwrap').hidden ? $('#igrp').value.trim() : e.group;
+  if (nextInfo === e.info && nextGrp === e.group) return;
+  const k = $('#page').value;
+  snapshot(); e.info = nextInfo;
+  if (nextGrp && nextGrp !== e.group) { e.group = nextGrp; e.p.group = nextGrp; edits.delete('order|' + e.sid); options(); $('#page').value = k; }
+  change();
+});
+$('#delpage').addEventListener('click', () => {
+  const e = page(); if (e.selected || e.order || e.cat) return;
+  if (!confirm(`Delete page "${e.p.name}"? Its unused photos will be removed when you click Save.`)) return;
+  $('#infodlg').close();
+  const sec = WORK.find(s => s.id === e.sid);
+  sec.projects = sec.projects.filter(p => p.id !== e.p.id);
+  if (!e.p.fresh) deletedPages.push({sid: e.sid, id: e.p.id, orig: [...e.orig, ...(e.p.th ? [e.p.th] : [])]});
+  edits.delete($('#page').value); edits.delete('order|' + e.sid);
+  dirty = true; options(); $('#page').selectedIndex = 0; $('#status').textContent = `deleted "${e.p.name}" (save to apply)`; syncBar(); draw();
+});
+$('#undo').addEventListener('click', doUndo);
+$('#discard').addEventListener('click', async () => { if (!dirty || confirm('Discard all unsaved changes?')) { await load(); draw(); $('#status').textContent = 'discarded'; } });
+
+function pvAct(fn){ const e = page(); if (!e.imgs?.length) return; fn(e, e.imgs[pvAt]); if (!e.imgs.length) $('#preview').close(); else openPreview(Math.min(pvAt, e.imgs.length - 1)); }
+$('#pv-x').addEventListener('click', () => $('#preview').close());
+$('#pv-p').addEventListener('click', () => openPreview(pvAt - 1));
+$('#pv-n').addEventListener('click', () => openPreview(pvAt + 1));
+$('#pv-first').addEventListener('click', () => pvAct((e) => { if (pvAt > 0) { move(pvAt, 0); pvAt = 0; } }));
+$('#pv-th').addEventListener('click', () => pvAct((e, id) => { if (e.selected) return; snapshot(); e.th = id; change(); }));
+$('#pv-star').addEventListener('click', () => pvAct((e, id) => { if (e.selected) return; snapshot(); const c = chosen(e.sid); c.imgs = c.imgs.includes(id) ? c.imgs.filter(x => x !== id) : [...c.imgs, id]; c.touched = true; change(); }));
+$('#pv-del').addEventListener('click', () => pvAct((e, id) => { snapshot(); e.imgs.splice(pvAt, 1); if (e.th === id) e.th = undefined; change(); }));
+$('#pv-capbtn').addEventListener('click', () => pvAct((e, id) => {
+  if (e.selected || e.p.poster) return;
+  const next = prompt('Camera line / caption (leave blank to clear)', captionOf(id));
+  if (next === null) return;
+  snapshot(); labelEdits[id] = next.trim(); change();
+}));
+$('#preview').addEventListener('click', ev => { if (ev.target === $('#preview')) $('#preview').close(); });
+addEventListener('keydown', ev => {
+  if ($('#preview').open) {
+    if (ev.key === 'ArrowLeft') openPreview(pvAt - 1);
+    else if (ev.key === 'ArrowRight') openPreview(pvAt + 1);
+    else if (ev.key.toLowerCase() === 's' && !$('#pv-star').hidden) $('#pv-star').click();
+    else if (ev.key.toLowerCase() === 'm' && !$('#pv-th').hidden) $('#pv-th').click();
+    else if (ev.key === '1' && !$('#pv-first').disabled) $('#pv-first').click();
+    else if (ev.key === 'Delete' || ev.key === 'Backspace') { ev.preventDefault(); $('#pv-del').click(); }
+    return;
+  }
+  if ((ev.ctrlKey || ev.metaKey) && ev.key.toLowerCase() === 'z' && !ev.shiftKey && !['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement?.tagName)) {
+    ev.preventDefault(); doUndo();
+  }
+});
+
+// tile size toggle (S / M / L), remembered locally
+const setSz = sz => { tiles.dataset.size = sz; document.querySelectorAll('.sizes button').forEach(b => b.setAttribute('aria-pressed', b.dataset.sz === sz)); try { localStorage.setItem('skm-ed-size', sz); } catch (e) {} };
+document.querySelector('.sizes').addEventListener('click', ev => { const b = ev.target.closest('button[data-sz]'); if (b) setSz(b.dataset.sz); });
+try { const saved = localStorage.getItem('skm-ed-size'); if (saved) setSz(saved); } catch (e) {}
 
 $('#thfile').addEventListener('change', async ev => {
   const e = page(), f = ev.target.files[0]; if (!f) return;
+  snapshot();
   const id = newId(e.p.id, f.name, takenIds()), small = await jpeg(await createImageBitmap(f, {imageOrientation: 'from-image'}), 192, 120);
   added[id] = {menu: small, url: URL.createObjectURL(small)}; e.th = id;
   ev.target.value = ''; change();
@@ -195,10 +339,13 @@ $('#save').addEventListener('click', async () => {
       if (added[id].thumb) await write(`assets/archive/t/${id}.jpg`, added[id].thumb);
       if (added[id].label) lab[id] = added[id].label;
     }
-    for (const e of pages) html = editIndex(html, {proj: e.p.id, cat: e.cat, imgs: e.imgs, th: e.th === e.p.th ? undefined : e.th ?? null, name: e.p.name});
-    // photos taken off a page and used nowhere else lose their caption, archive record and files
-    const gone = pages.flatMap(e => e.orig.filter(id => !e.imgs.includes(id))).filter(id => !html.includes(`"${id}"`) && !html.includes(`'${id}'`));
+    for (const d of deletedPages) html = deleteProject(html, d.sid, d.id);
+    for (const e of pages) html = editIndex(html, {proj: e.p.id, cat: e.cat, imgs: e.imgs, th: e.th === e.p.th ? undefined : e.th ?? null, name: e.p.name, info: e.info !== e.origInfo ? e.info : undefined, group: e.group !== e.origGroup ? e.group : undefined});
+    for (const [id, val] of Object.entries(labelEdits)) { if (val) lab[id] = val; else delete lab[id]; }
+    // photos taken off a page (or a deleted page) and used nowhere else lose their caption, archive record and files
+    const gone = [...pages.flatMap(e => e.orig.filter(id => !e.imgs.includes(id))), ...deletedPages.flatMap(d => d.orig)].filter(id => !html.includes(`"${id}"`) && !html.includes(`'${id}'`));
     gone.forEach(id => delete lab[id]);
+    if (deletedPages.length) ph = editPhotos(ph, {name: '', ids: [], removed: gone});
     for (const e of pages) if (!e.p.poster) ph = editPhotos(ph, {name: e.p.name, ids: e.imgs, removed: gone,
       added: Object.fromEntries(e.imgs.filter(id => added[id]?.thumb).map(id => [id, {w: added[id].thumb.w, h: added[id].thumb.h, date: added[id].date}]))});
     for (const e of pages) {  // the menu shows th, or the first photo: its small copy must exist

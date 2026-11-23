@@ -18,14 +18,16 @@ export const version = text => { let h = 0x811c9dc5; for (const c of text) h = M
 const list = ids => '[' + ids.map(i => JSON.stringify(i)).join(', ') + ']';
 const q = s => "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 
-/** One page's photos (or one category's), its menu photo and its name, written back into index.html. th: an id sets it, null drops it (the menu then shows the first photo). */
-export function editIndex(html, {proj, cat, imgs, th, name}){
+/** One page's photos (or one category's), its menu photo, name, subtitle and group, written back into index.html. th: an id sets it, null drops it (the menu then shows the first photo). */
+export function editIndex(html, {proj, cat, imgs, th, name, info, group}){
   const lines = html.split('\n'), at = lines.findIndex(l => l.startsWith(`    {id:'${proj}',`));
   if (at < 0) throw new Error(`no WORK line for ${proj}`);
   const target = cat ? lines.findIndex((l, i) => i > at && l.includes(`{name:${q(cat)},`)) : at;
   if (target < 0) throw new Error(`no category ${cat} in ${proj}`);
   lines[target] = lines[target].replace(/imgs:\[[^\]]*\]/, 'imgs:' + list(imgs));
   if (name) lines[at] = lines[at].replace(/\bname:(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/, `name:${q(name)}`);  // the page's, not a category's (those come later)
+  if (info !== undefined) lines[target] = lines[target].replace(/\binfo:(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/, `info:${q(info)}`);
+  if (group) lines[at] = lines[at].replace(/\bgroup:(?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*")/, `group:${q(group)}`);
   if (th === null) lines[at] = lines[at].replace(/\bth:'[^']*', /, '');
   else if (th) lines[at] = /\bth:'[^']*'/.test(lines[at]) ? lines[at].replace(/\bth:'[^']*'/, `th:${q(th)}`) : lines[at].replace(', info:', `, th:${q(th)}, info:`);
   return lines.join('\n');
@@ -136,5 +138,17 @@ export function orderProjects(html, sid, ids){
   const rank = b => { const r = ids.indexOf(b[0].match(/^    \{id:'([^']+)'/)[1]); return r < 0 ? ids.length : r; };
   const pages = starts.map((s, k) => lines.slice(s, starts[k + 1] ?? end)).sort((a, b) => rank(a) - rank(b));
   lines.splice(starts[0], end - starts[0], ...pages.flat());
+  return lines.join('\n');
+}
+
+/** Remove a project's WORK line(s) from a section in index.html. */
+export function deleteProject(html, sid, proj){
+  const lines = html.split('\n'), sec = lines.findIndex(l => l.startsWith(`  {id:'${sid}',`));
+  if (sec < 0) throw new Error(`no section ${sid}`);
+  const end = lines.findIndex((l, i) => i > sec && /^  \]\},?$/.test(l)), starts = [];
+  for (let i = sec + 1; i < end; i++) if (lines[i].startsWith('    {id:')) starts.push(i);
+  const k = starts.findIndex(i => lines[i].startsWith(`    {id:'${proj}',`));
+  if (k < 0) return html;
+  lines.splice(starts[k], (starts[k + 1] ?? end) - starts[k]);
   return lines.join('\n');
 }
