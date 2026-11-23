@@ -1,7 +1,7 @@
 /* light/dark theme for the L'Boulevard pages: saved choice, else the system setting; runs in <head> so the page paints in the right theme */
 (function(){
   var root=document.documentElement, KEY='lbv-theme', SITE='skm-theme';
-  try{ root.dataset.theme=localStorage.getItem(KEY)||localStorage.getItem(SITE)||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'); }catch(e){}
+  try{ root.dataset.theme=localStorage.getItem(SITE)||localStorage.getItem(KEY)||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark'); }catch(e){}
   document.addEventListener('DOMContentLoaded',function(){
     var cur=document.querySelector('.pages a[aria-current="page"]');
     function keepIn(){ if(cur&&cur.scrollIntoView) cur.scrollIntoView({inline:'nearest',block:'nearest'}); }
