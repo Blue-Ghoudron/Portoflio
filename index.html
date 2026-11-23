@@ -158,6 +158,9 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
   [data-zoom]::after{content:"⤢";position:absolute;right:10px;top:10px;width:30px;height:30px;display:grid;place-items:center;background:rgba(10,10,10,.72);color:#efece6;font-size:15px;opacity:0;transform:translateY(-4px);transition:.25s;pointer-events:none}
   @media (hover:hover) and (pointer:fine){[data-zoom]:hover::after{opacity:1;transform:none}}
   [data-zoom]:focus-visible::after{opacity:1;transform:none}
+  @media (hover:none){[data-zoom]::after{opacity:.85;transform:none}}  /* touch: always show the cue; top-right keeps it off the captions */
+  .hint{display:inline-flex;gap:8px;align-items:center;color:var(--dim);font-size:11px;letter-spacing:.18em;text-transform:uppercase;margin:-14px 0 24px}
+  .hint b{font-weight:400;color:var(--mute);font-size:14px;letter-spacing:0}
 
   .lb{--ink:#efece6;--mute:#8d8a85;--dim:#878480;color:var(--ink);position:fixed;inset:0;z-index:20;background:#060606;display:none;grid-template-rows:auto 1fr auto;opacity:0;transition:opacity .15s var(--ease-out),display .15s allow-discrete}
   .lb.on{display:grid;opacity:1;transition-duration:.2s}
@@ -468,7 +471,7 @@ function render(){
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector(`[data-sec="${sid}"] .selw`).setAttribute('aria-current', 'page');
     const posters = sec.projects.every(q => q.poster);
-    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p>${posters ? '' : `<div class="tools">${VT}</div>`}<div class="grid${posters ? ' poster' : ''}"></div></section>`;
+    view.innerHTML = `<section class="proj"><h2>${sec.name}</h2><p class="info">${sid === 'photography' ? 'Selected work' : sec.projects.map(q => q.name).join(' · ')}</p><div class="tools"><p class="hint"><b>⤢</b> click any ${posters ? 'poster' : 'photo'} to enlarge</p>${posters ? '' : VT}</div><div class="grid${posters ? ' poster' : ''}"></div></section>`;
     preview(view.querySelector('.grid'), sid);
     setMenu(false);
   } else if (!p) {
@@ -496,7 +499,7 @@ function render(){
     view.innerHTML = p.boulevard
       // the exhibition's own pages run in a frame, so its rooms open here instead of leaving the portfolio
       ? `<section class="lbv"><iframe src="${LBV}${room ? room + '/' : ''}index.html" title="L'Boulevard exhibition"></iframe></section>`
-      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p>${p.poster ? '' : `<div class="tools">${VT}</div>`}${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs, true)}${toTop(p.cats ? p.cats.reduce((n, c) => n + c.imgs.length, 0) : p.imgs.length)}${pnav(sec, p)}</section>`;
+      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p><div class="tools"><p class="hint"><b>⤢</b> click any ${p.poster ? 'poster' : 'photo'} to enlarge</p>${p.poster ? '' : VT}</div>${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs, true)}${toTop(p.cats ? p.cats.reduce((n, c) => n + c.imgs.length, 0) : p.imgs.length)}${pnav(sec, p)}</section>`;
     setMenu(false);
   }
   const now = [sid, pid, room].join('/');  // the route without filters: the archive re-filtering is not a new page
