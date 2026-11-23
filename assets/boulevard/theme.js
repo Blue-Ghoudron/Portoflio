@@ -10,5 +10,9 @@
     function label(){ var l=root.dataset.theme==='light'; b.textContent=l?'Dark':'Light'; b.setAttribute('aria-label','Switch to '+(l?'dark':'light')+' theme'); }
     b.addEventListener('click',function(){ root.dataset.theme=root.dataset.theme==='light'?'dark':'light'; try{ localStorage.setItem(KEY,root.dataset.theme); localStorage.setItem(SITE,root.dataset.theme); }catch(e){} label(); });
     label();
+    if(window.self!==window.top){
+      var s=document.createElement('style'); s.textContent='.lbv-full{text-decoration:none;display:inline-flex;align-items:center;margin-left:0}@media (max-width:820px){.lbv-full{display:none}}'; document.head.appendChild(s);
+      var f=document.createElement('a'); f.className='theme micro lbv-full'; f.href=location.href; f.target='_top'; f.textContent='Full ↗'; f.setAttribute('aria-label','Open exhibition full screen'); b.after(f);
+    }
   });
 })();

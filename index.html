@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SKIMART — Photographer / Visual Artist</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a0a0a'/%3E%3Ctext x='16' y='22' text-anchor='middle' font-family='sans-serif' font-size='18' font-weight='500' fill='%23efece6'%3ES%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Mohamed Ghoujlami (SKIMART) — Photographer and graphic designer in Casablanca, Morocco. Live music, street photography, portraits, L'Boulevard exhibition, and poster design.">
+<meta property="og:title" content="SKIMART — Mohamed Ghoujlami">
+<meta property="og:description" content="Photographer &amp; graphic designer in Casablanca — live music, street photography, portraits, and poster design.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="assets/boulevard/Movement/images/mov-25-9206.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <script>/* saved choice, else the system setting; in <head> so the page paints in the right theme */
 try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||localStorage.getItem('lbv-theme')||(matchMedia('(prefers-color-scheme: light)').matches?'light':'dark');document.documentElement.dataset.nav=localStorage.getItem('skm-nav')||'';document.documentElement.dataset.view=localStorage.getItem('skm-view')||''}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,6 +86,8 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
   .about dt{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--mute);padding-top:3px}
   .about dd a{border-bottom:1px solid var(--dim)}
   .about dd a:hover{border-color:var(--ink)}
+  .copy{margin-left:10px;padding:2px 8px;border:1px solid var(--line);font:400 10px/1.6 "IBM Plex Mono",monospace;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);vertical-align:1px;transition:color .2s,border-color .2s}
+  .copy:hover{color:var(--ink);border-color:var(--ink)}
   @media (max-width:560px){.about dl{grid-template-columns:1fr;gap:4px}.about dd{margin-bottom:12px}}
 
   .proj h2{font-weight:400;font-size:clamp(28px,3.4vw,44px);letter-spacing:-.01em}
@@ -86,8 +95,18 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
   /* every photo keeps its own shape, landscape or portrait; rows read left to right like the viewer */
   /* masonry: 1px rows, each figure spans its own height (set in JS) so it sits right under the one above */
   .grid{--g:14px;display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:1px;gap:0 var(--g);align-items:start}
+  .grid.small{grid-template-columns:repeat(2,1fr)}
+  .grid.solo{grid-template-columns:minmax(0,560px)}
+  @media (min-width:821px){.grid.lead figure.wide{grid-column:span 2}}
+  .pnav{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:clamp(56px,7vw,96px);padding-top:24px;border-top:1px solid var(--line)}
+  .pnav a{display:grid;gap:4px;min-height:44px;align-content:center;color:var(--mute);transition:color .2s}
+  .pnav a:hover{color:var(--ink)}
+  .pnav .next{grid-column:2;text-align:right;justify-items:end}
+  .pnav small{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+  .pnav span{font-size:clamp(18px,2vw,24px);line-height:1.15;color:var(--ink)}
+  @media (max-width:560px){.pnav{grid-template-columns:1fr}.pnav .next{grid-column:1;text-align:left;justify-items:start}}
   .proj{container-type:inline-size}
-  @container (min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}}
+  @container (min-width:1500px){.grid{grid-template-columns:repeat(4,1fr)}.grid.small{grid-template-columns:repeat(2,1fr)}.grid.solo{grid-template-columns:minmax(0,560px)}}
   .grid figure{margin-bottom:var(--g);overflow:hidden;background:var(--card);outline:1px solid transparent;outline-offset:3px;transition:outline-color .2s,opacity .3s}
   .grid img{display:block;width:100%;height:auto;transition:opacity .5s var(--ease-out),transform .8s var(--ease-out);opacity:0;transform:scale(1.03)}
   .grid img.in{opacity:1;transform:none}
@@ -196,6 +215,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
     .vt button{min-height:44px;padding:10px 16px}
     .sel .all{min-height:44px;display:inline-flex;align-items:center}
     .about dd a{min-height:44px;display:inline-flex;align-items:center;border-bottom:0;text-decoration:underline;text-underline-offset:4px}
+    .copy{min-height:44px;padding:0 12px;display:inline-flex;align-items:center}
     main{margin:0;padding:24px 16px 64px;min-height:0}
     /* the exhibition fills exactly what the menu bar leaves, so only the frame scrolls */
     body.lbv-on{display:flex;flex-direction:column;height:100svh}
@@ -203,6 +223,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
     .lbv{flex:1;display:flex;flex-direction:column}
     .lbv iframe{height:auto;flex:1}
     .grid{grid-template-columns:1fr 1fr;--g:10px}
+    .grid.solo{grid-template-columns:1fr}
     .cat{scroll-margin-top:84px}
     .grid figcaption{font-size:10px;letter-spacing:0;gap:6px}
   }
@@ -251,7 +272,7 @@ try{document.documentElement.dataset.theme=localStorage.getItem('skm-theme')||lo
   </div>
   <div class="navbody" id="navbody">
     <nav class="meta mono" aria-label="About">
-      <a href="#about">about</a><a href="https://www.instagram.com/_skimart_/">instagram ↗</a>
+      <a href="#about">about</a><a href="mailto:ghoujlamimohamed@gmail.com">email</a><a href="https://www.instagram.com/_skimart_/">instagram ↗</a>
       <button id="theme" type="button"></button>
     </nav>
     <h2 class="wh" id="wh">Portfolio</h2>
@@ -282,7 +303,7 @@ const WORK = [
     {id:'jazz', group:'Music', name:'Jazz', th:'jazz-0037-2', info:'American Arts Center · 16.05.2025', imgs:["jazz-0037-2", "jazz-8843", "jazz-8933", "jazz-8859", "jazz-0005", "jazz-0032", "jazz-8819", "x212203_272216", "x419019_144295", "x100262_436316", "x779934_841075", "x171283_202206", "x924209_35169", "x86830_191438", "x598080_647526", "jazz-8801", "jazz-8800", "jazz-0053", "jazz-0054", "jazz-0076", "jazz-0011-2"]},
     {id:'augmented-cube', group:'Music', name:'Augmented Cube', th:'augmented-cube-9433-2', info:'American Arts Center · 30.05.2025', imgs:["augmented-cube-9433", "augmented-cube-9452", "augmented-cube-9453", "augmented-cube-9601", "augmented-cube-9640", "augmented-cube-9641"]},
     {id:'majid-bekkas', group:'Music', name:'Majid Bekkas', th:'majid-bekkas-0203', info:'American Arts Center · 11.04.2026', imgs:["majid-bekkas-0077", "majid-bekkas-0203", "majid-bekkas-0184", "majid-bekkas-0230", "majid-bekkas-0187", "majid-bekkas-0235", "majid-bekkas-0227", "majid-bekkas-0225"]},
-    {id:'summer-sessions', group:'Music', name:'Summer Sessions', th:'x19901_61074', info:'liquid.bridge · Seamens Club Casablanca · 22.08.2026', imgs:["x627811_787172", "x212123_298179", "x429051_116215", "x19901_61074", "x598590_156911", "x501188_613690", "x227090_463441", "x316163_761898", "x823059_615258", "x613504_703056", "x609377_644968", "x980983_323513", "x562246_550939", "x996677_378388", "x520530_220013", "x241472_359800", "x738420_540762"]},
+    {id:'summer-sessions', group:'Music', name:'Summer Sessions', th:'x19901_61074', info:"liquid.bridge · Seamen's Club Casablanca · 22.08.2026", imgs:["x627811_787172", "x212123_298179", "x429051_116215", "x19901_61074", "x598590_156911", "x501188_613690", "x227090_463441", "x316163_761898", "x823059_615258", "x613504_703056", "x609377_644968", "x980983_323513", "x562246_550939", "x996677_378388", "x520530_220013", "x241472_359800", "x738420_540762"]},
     {id:'megaran-nanofunk', group:'Music', name:'Mega Ran & Nanofunk', th:'megaran-nanofunk-0006', info:'American Arts Center · 02.05.2026', imgs:["megaran-nanofunk-0006", "megaran-nanofunk-0055", "megaran-nanofunk-0097", "megaran-nanofunk-0124", "megaran-nanofunk-0128", "megaran-nanofunk-0129"]},
     {id:'gnawa', group:'Music', name:'Qamoum', th:'gnawa-1165-3', info:'American Arts Center · 16.03.2025', imgs:["gnawa-1165", "gnawa-1166", "gnawa-1187", "gnawa-1259", "gnawa-1277", "gnawa-1359"]},
     {id:'nanofunk', group:'Music', name:'Nanofunk', th:'nanofunk-0003', info:'American Arts Center · 28.07.2025', imgs:["x369338_339662", "x212033_187187", "x374118_196552", "x310513_96852"]},
@@ -298,7 +319,7 @@ const WORK = [
   {id:'design', name:'Design', projects:[
     {id:'aac', th:'design-aac', name:'American Arts Center', info:'Poster design', poster:true, imgs:['x815196_567852','x190932_899304','x905172_741900','x913199_406854','x276823_230940','x980645_442674','x885431_556498']},
     {id:'personal', th:'design-personal', name:'Personal project', info:'Poster design · C-01 – C-04', poster:true, cats:[
-      {name:'C-01', info:'Some of my personal project that explores Medieval, Gothic, Renaissance, and Oriental aesthetics and methodology.', imgs:['x609322_253534','x270757_649230','x746891_663120','x109724_353827','x118493_85813','x631743_861109']},
+      {name:'C-01', info:'Personal projects exploring Medieval, Gothic, Renaissance, and Oriental aesthetics and methodology.', imgs:['x609322_253534','x270757_649230','x746891_663120','x109724_353827','x118493_85813','x631743_861109']},
       {name:'C-02', info:'', imgs:['x99638_123460','x920834_698237','x392680_933255','x416801_359515']},
       {name:'C-03', info:'', imgs:['x542415_54580','x611198_115804','x799846_204911','x498923_828204','x706985_590407','x16309_49896','x341207_892313']},
       {name:'C-04', info:'', imgs:['x345557_230798','x569067_495874','x560715_265379','x216139_42263','x527500_851389','x627351_372270','x91009_432688','x637025_367152','x708231_215066','x73419_897462','x757374_212963','x349515_978978']}]},
@@ -326,7 +347,7 @@ nav.innerHTML = WORK.map(s => {
   // every section opens on its selected work; the archive row (photography) is off for now
   const arch = `<li><a class="selw" href="#${s.id}"><span>selected work</span><span class="n"></span></a></li>`
     + (ARCHIVE_IN_MENU && s.id === 'photography' ? '<li><a class="arch" href="#photography/archive"><span>archive · all photos</span><span class="n"></span></a></li>' : '');
-  return `<div class="sec" data-sec="${s.id}">${toggle('l-' + s.id, s.name, groups[0] ? groups.length : s.projects.length, 'sbtn')}
+  return `<div class="sec" data-sec="${s.id}">${toggle('l-' + s.id, s.name, s.projects.length, 'sbtn')}
     <div class="list" id="l-${s.id}"><div><ul class="mono">${arch}${body}</ul></div></div></div>`;
 }).join('');
 
@@ -342,7 +363,12 @@ const setMenu = open => { document.getElementById('side').classList.toggle('menu
 burger.onclick = () => setMenu(!document.getElementById('side').classList.contains('menu'));
 
 const cap = (i, cam) => `<figcaption><span class="no">${String(i + 1).padStart(2, '0')}</span><span class="cam">${(cam || '').replace(/^(.+? · .+?) · /, '$1<br>')}</span></figcaption>`;
-const grid = (p, imgs) => `<div class="grid ${p.poster ? 'poster' : ''}">${imgs.map((f, i) => `<figure data-zoom data-cam="${LABELS[f] || ''}" tabindex="0" role="button" aria-label="Enlarge ${p.poster ? 'poster' : 'photo'} ${i + 1}"><img src="${F(f)}" alt="${p.name}, ${p.poster ? 'poster' : 'photo'} ${i + 1}" loading="lazy">${p.poster ? '' : cap(i, LABELS[f])}</figure>`).join('')}</div>`;
+const grid = (p, imgs, lead = false) => `<div class="grid${p.poster ? ' poster' : ''}${imgs.length === 1 ? ' solo' : imgs.length <= 4 ? ' small' : ''}${lead && !p.poster && imgs.length >= 5 ? ' lead' : ''}">${imgs.map((f, i) => `<figure data-zoom data-cam="${LABELS[f] || ''}" tabindex="0" role="button" aria-label="Enlarge ${p.poster ? 'poster' : 'photo'} ${i + 1}"><img src="${F(f)}" alt="${p.name}, ${p.poster ? 'poster' : 'photo'} ${i + 1}" loading="lazy">${p.poster ? '' : cap(i, LABELS[f])}</figure>`).join('')}</div>`;
+const pnav = (sec, p) => {
+  const i = sec.projects.indexOf(p), prev = sec.projects[i - 1], next = sec.projects[i + 1];
+  if (!prev && !next) return '';
+  return `<nav class="pnav" aria-label="More in ${sec.name}">${prev ? `<a class="prev" href="#${sec.id}/${prev.id}"><small>← previous</small><span>${prev.name}</span></a>` : ''}${next ? `<a class="next" href="#${sec.id}/${next.id}"><small>next →</small><span>${next.name}</span></a>` : ''}</nav>`;
+};
 // each figure spans as many 1px rows as it is tall (+ the gap); re-run whenever a photo loads or the column width changes
 // a deep link (#design/personal/c-02) is re-scrolled as the photos above it get their height, until the visitor scrolls themselves
 let goTo = null; ['wheel', 'touchstart', 'keydown'].forEach(t => addEventListener(t, () => goTo = null, {passive: true}));
@@ -352,11 +378,16 @@ let shown;  // the route last animated in
 const VT = '<div class="vt mono" role="group" aria-label="Layout"><button type="button" data-v="">grid</button><button type="button" data-v="list">list</button></div>';
 const vtSync = () => view.querySelectorAll('.vt button').forEach(b => b.setAttribute('aria-pressed', b.dataset.v === (root.dataset.view || '')));
 view.addEventListener('click', e => {
+  const cp = e.target.closest('.copy[data-copy]');
+  if (cp) { navigator.clipboard?.writeText(cp.dataset.copy).then(() => { cp.textContent = 'copied'; setTimeout(() => cp.textContent = 'copy', 1800); }).catch(() => {}); return; }
   const b = e.target.closest('.vt button'); if (!b || b.dataset.v === (root.dataset.view || '')) return;
   root.dataset.view = b.dataset.v; try { localStorage.setItem('skm-view', b.dataset.v); } catch (err) {} vtSync();
   view.querySelectorAll('.grid').forEach(g => g.animate({opacity: [0, 1]}, {duration: 200, easing: 'cubic-bezier(0.23, 1, 0.32, 1)'}));  // the layout swap would jump
 });
-const settle = () => { vtSync(); view.querySelectorAll('img').forEach(i => i.complete ? i.classList.add('in') : i.onload = () => i.classList.add('in'));
+const settle = () => { vtSync(); view.querySelectorAll('img').forEach(i => {
+    const done = () => { i.classList.add('in'); const f = i.closest('.grid.lead figure:first-child'); if (f && i.naturalWidth > i.naturalHeight * 1.1) f.classList.add('wide'); };
+    i.complete ? done() : i.onload = done;
+  });
   mason.disconnect(); view.querySelectorAll('.grid figure').forEach(f => mason.observe(f)); };
 const archive = () => import('./assets/archive/archive.js');
 // the selection: photos ticked "featured" in tools/tag.html; until some are, each photography page's menu photo.
@@ -399,26 +430,34 @@ function openSec(id){ const s = nav.querySelector(`[data-sec="${id}"]`); if (s) 
 
 function render(){
   const [path, query = ''] = location.hash.slice(1).split('?'), [sid, pid, room] = path.split('/');
+  const wasLbv = document.body.classList.contains('lbv-on');
   document.body.classList.remove('lbv-on');
+  if (wasLbv) { try { root.dataset.nav = localStorage.getItem('skm-nav') || ''; } catch (err) {} foldLabel(); }
   document.querySelectorAll('aside a[aria-current]').forEach(a => a.removeAttribute('aria-current'));
   const sec = WORK.find(s => s.id === sid), p = sec && sec.projects.find(x => x.id === pid);
   if (sid === 'about') {
+    document.title = 'About — SKIMART';
     document.querySelector('.meta a[href="#about"]').setAttribute('aria-current', 'page');
     view.innerHTML = `<section class="proj about"><h2>About</h2><p class="info">Photographer / Visual Artist · Casablanca, Morocco</p>
       <div class="photo" data-zoom tabindex="0" role="button" aria-label="Enlarge photo"><img src="${F('soualem-0002-2')}" alt="Wheat field at dusk in Soualem, a clump of trees on the horizon under a blue sky and a low bank of cloud"></div>
       <p class="big">Real moments.<br>Visual stories.</p>
-      <p>I'm Mohamed Ghoujlami, aka SKIMART. I capture people, places and culture through photography, design and visual storytelling.</p>
+      <p>I'm Mohamed Ghoujlami, aka SKIMART — a photographer and graphic designer based in Casablanca.</p>
+      <p>My work focuses on live music, portraits, and street photography across cultural spaces like the American Arts Center and L'Boulevard Metal Day, alongside poster design and visual workshops.</p>
       <dl><dt>Photography</dt><dd>Live music, portraits, street photography, cultural documentation</dd>
       <dt>Graphic design</dt><dd>Posters, visual identities, editorial compositions</dd>
-      <dt>Contact</dt><dd><a href="mailto:ghoujlamimohamed@gmail.com">ghoujlamimohamed@gmail.com</a><br><a href="https://www.instagram.com/_skimart_/">@_skimart_ on Instagram ↗</a></dd></dl></section>`;
+      <dt>Selected venues</dt><dd>L'Boulevard Festival, American Arts Center, Cocktail Station, liquid.bridge</dd>
+      <dt>Available for</dt><dd>Live music, portraits, street &amp; cultural events, poster design — Casablanca &amp; travel</dd>
+      <dt>Contact</dt><dd><a href="mailto:ghoujlamimohamed@gmail.com">ghoujlamimohamed@gmail.com</a><button class="copy" type="button" data-copy="ghoujlamimohamed@gmail.com">copy</button><br><a href="https://www.instagram.com/_skimart_/">@_skimart_ on Instagram ↗</a></dd></dl></section>`;
     setMenu(false);
   } else if (sid === 'photography' && pid === 'archive') {
+    document.title = 'Archive — SKIMART';
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector('.arch')?.setAttribute('aria-current', 'page');
     if (!view.querySelector('.archive')) view.innerHTML = '<section class="proj archive"><h2>Archive</h2></section>';
     archive().then(m => m.showArchive(view, query, WORK, settle, VT));
     setMenu(false);
   } else if (sec && !pid) {
+    document.title = `${sec.name} — SKIMART`;
     // a whole section: photography's selection, or every design / workshop image; the home page shows the first few
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false)); openSec(sid);
     nav.querySelector(`[data-sec="${sid}"] .selw`).setAttribute('aria-current', 'page');
@@ -427,6 +466,7 @@ function render(){
     preview(view.querySelector('.grid'), sid);
     setMenu(false);
   } else if (!p) {
+    document.title = 'SKIMART — Photographer / Visual Artist';
     view.innerHTML = `<section class="home"><h1 class="vh">SKIMART · Photographer / Visual Artist</h1>
       <div class="intro"><img src="${F('me')}" alt="Mohamed Ghoujlami in a wheat field at dusk, holding a lamb"><p class="name">Mohamed<br>Ghoujlami</p><p class="roles">Photographer, graphic&nbsp;designer<small>Casablanca, Morocco</small></p><p class="bio">I capture people, places and culture through photography, design and visual storytelling — streets, live music and portraits.</p></div>
       <a class="lbv-feat" href="#photography/boulevard"><div><span class="k mono">Exhibition · 3 rooms</span><h2>L'Boulevard</h2><p class="meta-line mono">Metal Day · Casablanca · 2025–2026 · Movement · Connection · Faces and Eyes</p><span class="cta mono">enter exhibition →</span></div><div class="prints" aria-hidden="true"><img src="${LBV}Movement/images/mov-25-9206.jpg" alt=""><img src="${LBV}Band/images/frame-03.jpg" alt=""><img src="${LBV}Faces/images/fac-25-9304.jpg" alt=""></div></a>
@@ -435,19 +475,22 @@ function render(){
     if (sid) openSec(sid);
     setMenu(false);
   } else {
+    document.title = `${p.name} — SKIMART`;
     nav.querySelectorAll('.open').forEach(el => setOpen(el, false));  // only the open project's section and group stay unfolded
     openSec(sid);
     const cur = nav.querySelector(`a[href="#${sid}/${pid}"]`); cur.setAttribute('aria-current', 'page');
     const g = cur.closest('.gsec'); if (g && g.querySelector(':scope>.tog')) setOpen(g, true);
     if (p.boulevard) {
       document.body.classList.add('lbv-on');
+      // auto-fold desktop sidebar so the exhibition gets the full gallery wall; manual fold still works
+      root.dataset.nav = 'fold'; foldLabel();
       // same rule as the exhibition's theme.js, so the frame and the portfolio agree before it loads
       try { document.body.dataset.lbv = localStorage.getItem('lbv-theme') || localStorage.getItem('skm-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'); } catch (err) {}
     }
     view.innerHTML = p.boulevard
       // the exhibition's own pages run in a frame, so its rooms open here instead of leaving the portfolio
       ? `<section class="lbv"><iframe src="${LBV}${room ? room + '/' : ''}index.html" title="L'Boulevard exhibition"></iframe></section>`
-      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p>${p.poster ? '' : `<div class="tools">${VT}</div>`}${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs)}</section>`;
+      : `<section class="proj"><h2>${p.name}</h2><p class="info">${p.info}</p>${p.poster ? '' : `<div class="tools">${VT}</div>`}${p.cats ? p.cats.map(c => `<h3 class="cat" id="${c.name.toLowerCase()}">${c.name}</h3>${c.info ? `<p class="cinfo">${c.info}</p>` : ''}${grid(p, c.imgs)}`).join('') : grid(p, p.imgs, true)}${pnav(sec, p)}</section>`;
     setMenu(false);
   }
   const now = [sid, pid, room].join('/');  // the route without filters: the archive re-filtering is not a new page
